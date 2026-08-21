@@ -350,6 +350,14 @@
         function bindEvents() {
             console.log("Binding Events...")
             const { selectDataBackup } = window.dayaserap.elements
+            
+            // Initialize Select2 for dataBackup dropdown
+            selectDataBackup.select2({
+                placeholder: "Pilih Data",
+                allowClear: true,
+                width: '300px'
+            })
+            
             selectDataBackup.on("change", handleChangeSelectDataBackup)
         }
 
