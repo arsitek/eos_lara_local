@@ -360,3 +360,64 @@ Route::get('/maps/leaflet', [Leaflet::class, 'index'])->name('maps-leaflet');
 // laravel example
 Route::get('/laravel/user-management', [UserManagement::class, 'UserManagement'])->name('laravel-example-user-management');
 Route::resource('/user-list', UserManagement::class);
+
+// =========================================================================
+// Laporan Module Routes
+// =========================================================================
+use App\Http\Controllers\Laporan\RkaSSsatuController as RkaSatu;
+use App\Http\Controllers\Laporan\RkaSSduaController as RkaDua;
+use App\Http\Controllers\Laporan\RkaSStigaController as RkaTiga;
+use App\Http\Controllers\Laporan\RkaSSempatController as RkaEmpat;
+use App\Http\Controllers\Laporan\RkatController as Rkat;
+use App\Http\Controllers\Laporan\RkaRoController as RkaRo;
+use App\Http\Controllers\Laporan\RekapAnggaranUnitController as RekapAnggaranUnit;
+use App\Http\Controllers\Laporan\RpdUnitController;
+use App\Http\Controllers\Laporan\DataErrorController;
+use App\Http\Controllers\REKATREPORTController;
+
+Route::prefix('laporan')->group(base_path('routes/laporanRoutes.php'));
+
+Route::get('/laporanrkt', [REKATREPORTController::class, 'index'])->name('rktReport.index');
+Route::get('/laporanrkt/syncKro', [REKATREPORTController::class, 'syncKro'])->name('rktReport.syncKro');
+Route::get('/laporanrkt/syncKroApbn', [REKATREPORTController::class, 'syncKroApbn'])->name('rktReport.syncKroApbn');
+Route::get('/laporanrkt/pdf', [REKATREPORTController::class, 'pdf'])->name('rktReport.pdf');
+Route::get('/laporanrkt/rekatrabpdf', [REKATREPORTController::class, 'rekatpdf'])->name('rktReport.rekatPdf');
+Route::get('/laporanrkt/rekatrabxls', [REKATREPORTController::class, 'rekatxls'])->name('rktReport.rekatXls');
+Route::get('/laporanrkt/rabkegpdf', [REKATREPORTController::class, 'kegpdf'])->name('rktReport.kegPdf');
+Route::get('/laporanrkt/rabkegxls', [REKATREPORTController::class, 'kegxls'])->name('rktReport.kegXls');
+Route::get('/laporanrkt/rabperpdf', [REKATREPORTController::class, 'perpdf'])->name('rktReport.perPdf');
+Route::get('/laporanrkt/rabperxls', [REKATREPORTController::class, 'perxls'])->name('rktReport.perXls');
+Route::get('/laporanrkt/rabgdgpdf', [REKATREPORTController::class, 'gdgpdf'])->name('rktReport.gdgPdf');
+Route::get('/laporanrkt/rabgdgxls', [REKATREPORTController::class, 'gdgxls'])->name('rktReport.gdgXls');
+Route::get('/laporanrkt/excel', [REKATREPORTController::class, 'excel'])->name('rktReport.excel');
+Route::get('/laporanrkt/getUnit', [REKATREPORTController::class, 'getUnitKerja'])->name('rktReport.getUnit');
+
+Route::get('/laporanrka/sasaran/satu', [RkaSatu::class, 'index'])->name('rka.satu.index');
+Route::get('/laporanrka/sasaran/satu/get', [RkaSatu::class, 'getNonApbn'])->name('rka.satu.getNonApbn');
+Route::get('/laporanrka/sasaran/satu/pdf', [RkaSatu::class, 'pdfNonApbn'])->name('rka.satu.pdfNonApbn');
+Route::get('/laporanrka/sasaran/dua', [RkaDua::class, 'index'])->name('rka.dua.index');
+Route::get('/laporanrka/sasaran/dua/get', [RkaDua::class, 'getNonApbn'])->name('rka.dua.getNonApbn');
+Route::get('/laporanrka/sasaran/dua/pdf', [RkaDua::class, 'pdfNonApbn'])->name('rka.dua.pdfNonApbn');
+Route::get('/laporanrka/sasaran/tiga', [RkaTiga::class, 'index'])->name('rka.tiga.index');
+Route::get('/laporanrka/sasaran/tiga/get', [RkaTiga::class, 'getNonApbn'])->name('rka.tiga.getNonApbn');
+Route::get('/laporanrka/sasaran/tiga/pdf', [RkaTiga::class, 'pdfNonApbn'])->name('rka.tiga.pdfNonApbn');
+Route::get('/laporanrka/sasaran/empat', [RkaEmpat::class, 'index'])->name('rka.empat.index');
+Route::get('/laporanrka/sasaran/empat/get', [RkaEmpat::class, 'getNonApbn'])->name('rka.empat.getNonApbn');
+Route::get('/laporanrka/sasaran/empat/pdf', [RkaEmpat::class, 'pdfNonApbn'])->name('rka.empat.pdfNonApbn');
+
+// laporan rka by rincianOutput
+Route::get('/laporan/rkaoutput', [RkaRo::class, 'index'])->name('rka.ro.index');
+Route::get('/laporan/rkaoutput/{idunit}', [RkaRo::class, 'show'])->name('rka.ro.show');
+Route::get('/laporan/rkaoutput/get/{idunit}', [RkaRo::class, 'get'])->name('rka.ro.get');
+
+// laporan anggaran unit kerja
+Route::get('/laporan/rekap', [RekapAnggaranUnit::class, 'index'])->name('rekap.anggaran.index');
+Route::get('/laporan/rekap/getData', [RekapAnggaranUnit::class, 'getAnggaran'])->name('rekap.anggaran.get');
+
+// Laporan Rpd Berdasarkan unit kerja
+Route::get('/laporan/rpdunit', [RpdUnitController::class, 'index'])->name("rpdunit.index");
+Route::get('/laporan/rpdunit/get', [RpdUnitController::class, 'getDataRpdNotNull'])->name("rpdunit.get");
+
+// Laporan Data Error
+Route::get('/laporan/dataerror', [DataErrorController::class, 'index'])->name("dataerror.index");
+Route::get('/laporan/dataerror/get', [DataErrorController::class, 'getDataPPKNull'])->name("dataerror.get");
