@@ -22,7 +22,7 @@
   <div class="card bg-transparent shadow-none my-6 border-0">
     <div class="card-body row p-0 pb-6 g-6">
       <div class="col-12">
-        <h5 class="mb-2">TOTAL DAYA SERAP PER {{ $backupTahun ?? 'Data Terbaru' }}</h5>
+        <h5 class="mb-2">TOTAL DAYA SERAP PER {{ $backupKeterangan ?? 'Data Terbaru' }}</h5>
         <div class="col-12 col-lg-8">
           <p>Ringkasan total pagu alokasi, realisasi, daya serap, dan rata-rata persentase untuk seluruh unit.</p>
         </div>
@@ -156,7 +156,8 @@
 
   <!-- Daya Serap DataTable -->
   <div class="card">
-    <h5 class="card-header pb-0 text-md-start text-center">DAYA SERAP - {{ $backupKeterangan ?? 'Data Terbaru' }}</h5>
+    <h5 class="card-header pb-0 text-md-start text-center">RINCIAN DAYA SERAP -
+      {{ $backupKeterangan ?? 'Data Terbaru' }}</h5>
     <div class="card-datatable">
       <table class="dt-dayaserap table table-bordered" id="dayaSerapTable">
         <thead>
