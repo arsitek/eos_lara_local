@@ -9,12 +9,12 @@
 
 <!-- Vendor Scripts -->
 @section('vendor-script')
-  @vite(['resources/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js'])
+  @vite(['resources/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js', 'resources/assets/vendor/libs/notiflix/notiflix.js'])
 @endsection
 
 <!-- Page Scripts -->
 @section('page-script')
-  @vite(['resources/assets/js/statistik-dayaserap.js'])
+  @vite(['resources/assets/js/statistik-dayaserap.js', 'resources/assets/js/cards-actions.js'])
 @endsection
 
 @section('content')
@@ -210,6 +210,91 @@
     </div>
   </div>
   <!--/ Daya Serap DataTable -->
+
+  <!-- Dokumentasi -->
+  <div class="card card-action mb-4">
+    <div class="card-header">
+      <h5 class="card-action-title mb-0">Dokumentasi</h5>
+      <div class="card-action-element">
+        <ul class="list-inline mb-0">
+          <li class="list-inline-item">
+            <a href="javascript:void(0);" class="card-collapsible"><i
+                class="icon-base ti tabler-chevron-up icon-sm"></i></a>
+          </li>
+          <li class="list-inline-item">
+            <a href="javascript:void(0);" class="card-expand"><i
+                class="icon-base ti tabler-arrows-maximize icon-sm"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="collapse">
+      <div class="card-body">
+        <h6 class="mb-3">Proses Pengolahan Data</h6>
+        <ol class="mb-4">
+          <li>Mengambil data backup terbaru dari tabel <code>tb_duplikasi_rkat</code> dengan kondisi <code>is_deleted =
+              false</code>, <code>duplikasi_ke = 0</code>, dan <code>peruntukan = 'RKAT Awal'</code></li>
+          <li>Mengambil data alokasi dari tabel <code>tb_backup_alokasi</code> dengan join ke <code>tb_sumberdana</code>
+            dan <code>tb_unit_api</code></li>
+          <li>Mengambil data realisasi dari tabel <code>tb_backup_rkat</code> dengan join ke
+            <code>tb_backup_rkat_detail</code>, <code>tb_sumberdana</code>, dan <code>tb_unit_api</code>
+          </li>
+          <li>Menggabungkan data alokasi dan realisasi berdasarkan kombinasi unit kerja dan sumber dana</li>
+          <li>Menghitung daya serap dan persentase untuk setiap kombinasi unit-sumber dana</li>
+          <li>Mengakumulasi data per unit untuk statistik agregat</li>
+        </ol>
+
+        <h6 class="mb-3">Tabel Database yang Digunakan</h6>
+        <ul class="mb-4">
+          <li><code>tb_duplikasi_rkat</code> - Menyimpan informasi backup RKAT (id, keterangan, tahun, created_at)</li>
+          <li><code>tb_backup_alokasi</code> - Menyimpan data alokasi pagu per unit dan sumber dana</li>
+          <li><code>tb_sumberdana</code> - Menyimpan master data sumber dana (kd_sumberdana, sumberdana, is_show,
+            is_deleted, tahun)</li>
+          <li><code>tb_unit_api</code> - Menyimpan master data unit kerja (idunit, nama)</li>
+          <li><code>tb_backup_rkat</code> - Menyimpan header backup RKAT</li>
+          <li><code>tb_backup_rkat_detail</code> - Menyimpan detail backup RKAT (jumlah_amprahan, jumlah_realisasi)</li>
+        </ul>
+
+        <h6 class="mb-3">Formula Matematika</h6>
+        <div class="mb-4">
+          <p class="mb-2"><strong>Daya Serap per Unit-Sumber Dana:</strong></p>
+          <code class="d-block mb-3">Daya Serap = Pagu Alokasi - Realisasi</code>
+
+          <p class="mb-2"><strong>Persentase per Unit-Sumber Dana:</strong></p>
+          <code class="d-block mb-3">Persentase = (Realisasi / Pagu Alokasi) × 100</code>
+
+          <p class="mb-2"><strong>Total Pagu Alokasi per Unit:</strong></p>
+          <code class="d-block mb-3">Total Pagu Alokasi = Σ(Pagu Alokasi) untuk semua sumber dana unit tersebut</code>
+
+          <p class="mb-2"><strong>Total Realisasi per Unit:</strong></p>
+          <code class="d-block mb-3">Total Realisasi = Σ(Realisasi) untuk semua sumber dana unit tersebut</code>
+
+          <p class="mb-2"><strong>Total Daya Serap per Unit:</strong></p>
+          <code class="d-block mb-3">Total Daya Serap = Σ(Daya Serap) untuk semua sumber dana unit tersebut</code>
+
+          <p class="mb-2"><strong>Rata-rata Persentase per Unit:</strong></p>
+          <code class="d-block mb-3">Rata-rata Persentase = Σ(Persentase) / Jumlah Sumber Dana</code>
+
+          <p class="mb-2"><strong>Total Semua Unit:</strong></p>
+          <code class="d-block mb-3">Total = Σ(Total per Unit) untuk semua unit</code>
+
+          <p class="mb-2"><strong>Rata-rata Persentase Semua Unit:</strong></p>
+          <code class="d-block mb-3">Rata-rata = Σ(Persentase per Unit) / Jumlah Unit</code>
+        </div>
+
+        <h6 class="mb-3">Keterangan Statistik</h6>
+        <ul class="mb-0">
+          <li><strong>5 Unit dengan Daya Serap Terendah:</strong> Unit dengan rata-rata persentase daya serap terendah
+            (diurutkan ascending)</li>
+          <li><strong>Daftar Unit dengan Persentase > 100%:</strong> Unit yang realisasinya melebihi pagu alokasi
+            (over-budget)</li>
+          <li><strong>Data ditampilkan dalam format Indonesia:</strong> Angka menggunakan pemisah ribuan dengan titik (.)
+            dan desimal dengan koma (,)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!--/ Dokumentasi -->
 
   <script>
     // Pass data to JavaScript
