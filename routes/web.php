@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\laravel_example\UserManagement;
 use App\Http\Controllers\dashboard\Analytics;
 use App\Http\Controllers\dashboard\Crm;
+use App\Http\Controllers\dashboard\Eos;
 use App\Http\Controllers\language\LanguageController;
 use App\Http\Controllers\layouts\CollapsedMenu;
 use App\Http\Controllers\layouts\ContentNavbar;
@@ -164,6 +165,7 @@ use App\Http\Controllers\maps\Leaflet;
 Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
 Route::get('/dashboard/crm', [Crm::class, 'index'])->name('dashboard-crm');
+Route::get('/dashboard/eos', [Eos::class, 'index'])->name('dashboard-eos');
 // locale
 Route::get('/lang/{locale}', [LanguageController::class, 'swap']);
 

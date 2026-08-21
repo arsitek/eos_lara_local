@@ -20,6 +20,11 @@
           "slug": "dashboard-crm"
         },
         {
+          "url": "dashboard/eos",
+          "name": "EOS",
+          "slug": "dashboard-eos"
+        },
+        {
           "url": "app/ecommerce/dashboard",
           "name": "eCommerce",
           "slug": "app-ecommerce-dashboard"

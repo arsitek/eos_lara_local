@@ -18,6 +18,12 @@
           "slug": "dashboard-crm"
         },
         {
+          "url": "dashboard/eos",
+          "name": "EOS",
+          "icon": "menu-icon icon-base ti tabler-vector-bezier-circle",
+          "slug": "dashboard-eos"
+        },
+        {
           "url": "app/ecommerce/dashboard",
           "name": "eCommerce",
           "icon": "menu-icon icon-base ti tabler-shopping-cart",
