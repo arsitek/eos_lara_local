@@ -82,6 +82,9 @@ class StatistikController extends Controller
             }
         }
 
-        return view('statistik.dayaserap', compact('dataDayaSerap', 'backupKeterangan'));
+        // Convert associative array to indexed array for DataTable
+        $dataDayaSerapArray = array_values($dataDayaSerap);
+
+        return view('statistik.dayaserap', compact('dataDayaSerapArray', 'backupKeterangan'));
     }
 }

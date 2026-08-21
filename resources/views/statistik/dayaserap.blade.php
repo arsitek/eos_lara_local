@@ -40,6 +40,6 @@
 
   <script>
     // Pass data to JavaScript
-    window.dataDayaSerap = @json($dataDayaSerap);
+    window.dataDayaSerap = @json($dataDayaSerapArray);
   </script>
 @endsection
