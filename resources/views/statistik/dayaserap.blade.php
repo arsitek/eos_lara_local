@@ -1,5 +1,11 @@
-@extends('layout.layout')
+@extends('layouts/layoutMaster')
+
 @section('title', 'Statistik | Daya Serap')
+
+@section('page-style')
+  @vite(['resources/assets/vendor/fonts/fontawesome.scss'])
+@endsection
+
 @section('content')
   <style>
     .card {
