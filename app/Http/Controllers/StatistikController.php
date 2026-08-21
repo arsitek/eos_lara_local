@@ -36,7 +36,7 @@ class StatistikController extends Controller
             SUM(COALESCE(backupRkatDet.jumlah_amprahan, 0) + COALESCE(backupRkatDet.jumlah_realisasi, 0)) AS realisasi
         FROM tb_backup_rkat backupRkat
         INNER JOIN tb_backup_rkat_detail backupRkatDet ON backupRkatDet.id_rekat = backupRkat.id_rekat
-        INNER JOIN sumberdana sd ON sd.kd_sumberdana = backupRkat.sd
+        INNER JOIN tb_sumberdana sd ON sd.kd_sumberdana = backupRkat.sd
         INNER JOIN tb_unit_api unit ON unit.idunit = backupRkat.idunit
         WHERE backupRkat.id_duplikasi = ?
           AND backupRkatDet.id_duplikasi = ?
