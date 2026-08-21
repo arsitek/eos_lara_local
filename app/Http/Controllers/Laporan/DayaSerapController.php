@@ -112,7 +112,7 @@ class DayaSerapController extends Controller
             Log::info('getAlokasiBackup - JOIN count (ba + unit): ' . $checkJoinUnit[0]->count);
 
             $alokasiBackup = DB::connection('sirekat')->select("SELECT sd.sumberdana, ba.*, unit.nama FROM tb_backup_alokasi ba
-                INNER JOIN tb_sumberdana sd ON sd.kd_sumberdana = ba.kode_sd AND sd.is_show = 'true' AND sd.is_deleted = 'false'
+                INNER JOIN tb_sumberdana sd ON sd.kd_sumberdana = CONCAT('42', ba.kode_sd) AND sd.is_show = 'true' AND sd.is_deleted = 'false'
                 INNER JOIN tb_unit_api unit ON unit.idunit = ba.idunit WHERE ba.id_duplikasi = ? ORDER BY sd.kd_sumberdana, ba.idunit",
                 [$idBackup]);
 
