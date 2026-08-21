@@ -18,6 +18,48 @@
 @endsection
 
 @section('content')
+  <!-- Total Semua Unit -->
+  <div class="card mb-4">
+    <h5 class="card-header pb-0">TOTAL SEMUA UNIT</h5>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="card bg-light">
+            <div class="card-body">
+              <h6 class="card-title mb-1">TOTAL PAGU ALOKASI</h6>
+              <h4 class="card-text mb-0">{{ number_format($totalSemua['total_pagu_alokasi'] ?? 0, 0, ',', '.') }}</h4>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card bg-light">
+            <div class="card-body">
+              <h6 class="card-title mb-1">TOTAL REALISASI</h6>
+              <h4 class="card-text mb-0">{{ number_format($totalSemua['total_realisasi'] ?? 0, 0, ',', '.') }}</h4>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card bg-light">
+            <div class="card-body">
+              <h6 class="card-title mb-1">TOTAL DAYA SERAP</h6>
+              <h4 class="card-text mb-0">{{ number_format($totalSemua['total_daya_serap'] ?? 0, 0, ',', '.') }}</h4>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card bg-light">
+            <div class="card-body">
+              <h6 class="card-title mb-1">RATA-RATA PERSENTASE</h6>
+              <h4 class="card-text mb-0">{{ $totalSemua['avg_persentase'] ?? 0 }}%</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Total Semua Unit -->
+
   <!-- 5 Unit dengan Daya Serap Terendah -->
   <div class="card mb-4">
     <h5 class="card-header pb-0">5 Unit dengan Daya Serap Terendah</h5>

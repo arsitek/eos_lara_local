@@ -85,6 +85,28 @@ class StatistikController extends Controller
         // Convert associative array to indexed array for DataTable
         $dataDayaSerapArray = array_values($dataDayaSerap);
 
+        // Hitung total untuk semua unit
+        $totalSemua = [
+            'total_pagu_alokasi' => 0,
+            'total_realisasi' => 0,
+            'total_daya_serap' => 0,
+            'avg_persentase' => 0,
+            'count' => 0
+        ];
+
+        foreach ($dataDayaSerapArray as $item) {
+            $totalSemua['total_pagu_alokasi'] += $item['pagu_alokasi'];
+            $totalSemua['total_realisasi'] += $item['realisasi'];
+            $totalSemua['total_daya_serap'] += $item['daya_serap'];
+            $totalSemua['avg_persentase'] += $item['persentase'];
+            $totalSemua['count']++;
+        }
+
+        // Hitung rata-rata persentase untuk semua unit
+        if ($totalSemua['count'] > 0) {
+            $totalSemua['avg_persentase'] = round($totalSemua['avg_persentase'] / $totalSemua['count'], 2);
+        }
+
         // Hitung data akumulasi per unit untuk 5 unit dengan daya serap terendah
         $dataPerUnit = [];
         foreach ($dataDayaSerapArray as $item) {
@@ -120,6 +142,6 @@ class StatistikController extends Controller
 
         $unitTerendah5 = array_slice($dataPerUnit, 0, 5);
 
-        return view('statistik.dayaserap', compact('dataDayaSerapArray', 'backupKeterangan', 'unitTerendah5'));
+        return view('statistik.dayaserap', compact('dataDayaSerapArray', 'backupKeterangan', 'unitTerendah5', 'totalSemua'));
     }
 }
