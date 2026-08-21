@@ -142,6 +142,6 @@ class StatistikController extends Controller
 
         $unitTerendah5 = array_slice($dataPerUnit, 0, 5);
 
-        return view('statistik.dayaserap', compact('dataDayaSerapArray', 'backupKeterangan', 'unitTerendah5', 'totalSemua'));
+        return view('statistik.dayaserap', compact('dataDayaSerapArray', 'backupKeterangan', 'unitTerendah5', 'totalSemua', 'backupTahun'));
     }
 }
