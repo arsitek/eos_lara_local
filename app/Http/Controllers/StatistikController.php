@@ -4,30 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View as ViewContract;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class StatistikController extends Controller
 {
     public function dayaSerap(): ViewContract
     {
-        // Query untuk mendapatkan data daya serap dari backup Mei 2026 (idBackup = 73)
-        $idBackup = 73;
+        // Query untuk mendapatkan idBackup terbaru dari tb_duplikasi_rkat
+        $latestBackup = DB::connection('sirekat')->select("SELECT id, keterangan, tahun
+            FROM tb_duplikasi_rkat
+            WHERE is_deleted = false
+              AND duplikasi_ke = 0
+              AND peruntukan = 'RKAT Awal'
+            ORDER BY created_at DESC
+            LIMIT 1");
 
-        // Check if tb_backup_alokasi has data for this idBackup
-        $checkAlokasi = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_backup_alokasi WHERE id_duplikasi = ?", [$idBackup]);
-        Log::info('StatistikController - tb_backup_alokasi count for idBackup ' . $idBackup . ': ' . $checkAlokasi[0]->count);
+        if (empty($latestBackup)) {
+            return view('statistik.dayaserap', ['dataDayaSerap' => []]);
+        }
 
-        // Check if tb_sumberdana has data
-        $checkSumberdana = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_sumberdana");
-        Log::info('StatistikController - tb_sumberdana total count: ' . $checkSumberdana[0]->count);
-
-        // Sample data from tb_backup_alokasi
-        $sampleAlokasi = DB::connection('sirekat')->select("SELECT id_duplikasi, kode_sd, idunit FROM tb_backup_alokasi WHERE id_duplikasi = ? LIMIT 5", [$idBackup]);
-        Log::info('StatistikController - sample data from tb_backup_alokasi: ' . json_encode($sampleAlokasi));
-
-        // Sample data from tb_sumberdana
-        $sampleSumberdana = DB::connection('sirekat')->select("SELECT kd_sumberdana, sumberdana FROM tb_sumberdana LIMIT 5");
-        Log::info('StatistikController - sample data from tb_sumberdana: ' . json_encode($sampleSumberdana));
+        $idBackup = $latestBackup[0]->id;
+        $backupTahun = $latestBackup[0]->tahun;
+        $backupKeterangan = $latestBackup[0]->keterangan;
 
         // Alokasi Backup
         $alokasiBackup = DB::connection('sirekat')->select("SELECT
@@ -43,8 +40,6 @@ class StatistikController extends Controller
         WHERE ba.id_duplikasi = ?
         ORDER BY sd.kd_sumberdana, ba.idunit", [$idBackup]);
 
-        Log::info('StatistikController - alokasiBackup count: '.count($alokasiBackup));
-
         // Realisasi Backup
         $realisasiBackup = DB::connection('sirekat')->select("SELECT
             unit.nama AS unit_kerja,
@@ -58,10 +53,8 @@ class StatistikController extends Controller
         INNER JOIN tb_unit_api unit ON unit.idunit = backupRkat.idunit
         WHERE backupRkat.id_duplikasi = ?
           AND backupRkatDet.id_duplikasi = ?
-          AND backupRkat.tahun = 'Definitif_2026'
-        GROUP BY unit.idunit, backupRkat.sd", [$idBackup, $idBackup]);
-
-        Log::info('StatistikController - realisasiBackup count: '.count($realisasiBackup));
+          AND backupRkat.tahun = ?
+        GROUP BY unit.idunit, backupRkat.sd", [$idBackup, $idBackup, $backupTahun]);
 
         // Gabungkan data alokasi dan realisasi
         $dataDayaSerap = [];
@@ -89,6 +82,6 @@ class StatistikController extends Controller
             }
         }
 
-        return view('statistik.dayaserap', compact('dataDayaSerap'));
+        return view('statistik.dayaserap', compact('dataDayaSerap', 'backupKeterangan'));
     }
 }
