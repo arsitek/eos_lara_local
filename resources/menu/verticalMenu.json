@@ -42,6 +42,142 @@
       ]
     },
     {
+      "name": "Laporan",
+      "icon": "menu-icon icon-base ti tabler-report-analytics",
+      "slug": "laporan",
+      "badge": [
+        "primary",
+        "25"
+      ],
+      "submenu": [
+        {
+          "url": "laporan/rktunit",
+          "name": "Rekat Unit Kerja",
+          "slug": "laporan-rktunit"
+        },
+        {
+          "url": "laporan/rka/coa",
+          "name": "RKA COA",
+          "slug": "laporan-rka-coa"
+        },
+        {
+          "url": "laporan/report-perkin",
+          "name": "Perjanjian Kinerja (PERKIN)",
+          "slug": "laporan-report-perkin"
+        },
+        {
+          "url": "laporan/per-rpd",
+          "name": "RPD",
+          "slug": "laporan-per-rpd"
+        },
+        {
+          "url": "laporan/analisis",
+          "name": "Analisis",
+          "slug": "laporan-analisis"
+        },
+        {
+          "url": "laporan/subkomponen",
+          "name": "Subkomponen",
+          "slug": "laporan-subkomponen"
+        },
+        {
+          "url": "laporan/tahunan",
+          "name": "Laporan Tahunan",
+          "slug": "laporan-tahunan"
+        },
+        {
+          "url": "laporan/lampiranRkat",
+          "name": "Lampiran RKAT",
+          "slug": "laporan-lampiran-rkat"
+        },
+        {
+          "url": "laporan/pendapatan",
+          "name": "Pendapatan",
+          "slug": "laporan-pendapatan"
+        },
+        {
+          "url": "laporan/pembiayaan",
+          "name": "Pembiayaan",
+          "slug": "laporan-pembiayaan"
+        },
+        {
+          "url": "laporan/proporsianggaran",
+          "name": "Proporsi Anggaran",
+          "slug": "laporan-proporsianggaran"
+        },
+        {
+          "url": "laporan/lembarpengendalian",
+          "name": "Lembar Pengendalian",
+          "slug": "laporan-lembarpengendalian"
+        },
+        {
+          "url": "laporan/dayaserap",
+          "name": "Daya Serap",
+          "slug": "laporan-dayaserap"
+        },
+        {
+          "url": "laporan/usulan-revisi",
+          "name": "Usulan Revisi",
+          "slug": "laporan-usulan-revisi"
+        },
+        {
+          "url": "laporan/rekap-revisi",
+          "name": "Rekap Revisi",
+          "slug": "laporan-rekap-revisi"
+        },
+        {
+          "url": "laporan/datapaket",
+          "name": "Data Paket",
+          "slug": "laporan-datapaket"
+        },
+        {
+          "url": "laporanrkt",
+          "name": "REKAT",
+          "slug": "laporan-rekat"
+        },
+        {
+          "url": "laporanrka/sasaran/satu",
+          "name": "RKA Sasaran Strategis 1",
+          "slug": "laporan-rka-ss1"
+        },
+        {
+          "url": "laporanrka/sasaran/dua",
+          "name": "RKA Sasaran Strategis 2",
+          "slug": "laporan-rka-ss2"
+        },
+        {
+          "url": "laporanrka/sasaran/tiga",
+          "name": "RKA Sasaran Strategis 3",
+          "slug": "laporan-rka-ss3"
+        },
+        {
+          "url": "laporanrka/sasaran/empat",
+          "name": "RKA Sasaran Strategis 4",
+          "slug": "laporan-rka-ss4"
+        },
+        {
+          "url": "laporan/rkaoutput",
+          "name": "RKA Rincian Output",
+          "slug": "laporan-rka-output"
+        },
+        {
+          "url": "laporan/rekap",
+          "name": "Rekap Anggaran Unit",
+          "slug": "laporan-rekap-anggaran"
+        },
+        {
+          "url": "laporan/rpdunit",
+          "name": "RPD Unit Kerja",
+          "slug": "laporan-rpdunit"
+        },
+        {
+          "url": "laporan/dataerror",
+          "name": "Data Error (PPK Null)",
+          "slug": "laporan-dataerror"
+        }
+      ]
+    },
+    {
       "name": "Layouts",
       "icon": "menu-icon icon-base ti tabler-layout-sidebar",
       "slug": "layouts",
