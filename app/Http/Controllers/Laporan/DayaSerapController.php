@@ -60,20 +60,29 @@ class DayaSerapController extends Controller
                 return response()->json(['success' => false, 'message' => 'ID Backup harus diisi dan berupa angka'], 422);
             }
 
-            // Check if idBackup exists in sirekat connection
-            $exists = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_duplikasi_rkat WHERE id = ?", [$idBackup]);
-            if (empty($exists) || $exists[0]->count == 0) {
+            // Get backup info to get the correct year
+            $backupInfo = DB::connection('sirekat')->select("SELECT id, keterangan, tahun FROM tb_duplikasi_rkat WHERE id = ?", [$idBackup]);
+            if (empty($backupInfo)) {
                 return response()->json(['success' => false, 'message' => 'ID Backup tidak ditemukan'], 422);
+            }
+            $backupTahun = $backupInfo[0]->tahun;
+
+            // Extract year number from backup tahun (e.g., "Definitif_2026" -> "2026")
+            $backupTahunAngka = $backupTahun;
+            if (strpos($backupTahun, '_') !== false) {
+                $parts = explode('_', $backupTahun);
+                $backupTahunAngka = end($parts);
             }
 
             // Debug logging
             Log::info('getAlokasiBackup - idBackup: ' . $idBackup);
-            Log::info('getAlokasiBackup - tahun: ' . $tahun . ', tahunAngka: ' . $tahunAngka);
+            Log::info('getAlokasiBackup - session tahun: ' . $tahun . ', session tahunAngka: ' . $tahunAngka);
+            Log::info('getAlokasiBackup - backup tahun: ' . $backupTahun . ', backup tahunAngka: ' . $backupTahunAngka);
 
             $alokasiBackup = DB::connection('sirekat')->select("SELECT sd.sumberdana, ba.*, unit.nama FROM tb_backup_alokasi ba
                 INNER JOIN tb_sumberdana sd ON sd.kd_sumberdana = ba.kode_sd AND sd.is_show = 'true' AND sd.is_deleted = 'false' AND sd.tahun = ?
                 INNER JOIN tb_unit_api unit ON unit.idunit = ba.idunit WHERE ba.id_duplikasi = ? ORDER BY sd.kd_sumberdana, ba.idunit",
-                [$tahunAngka, $idBackup]);
+                [$backupTahunAngka, $idBackup]);
 
             Log::info('getAlokasiBackup - alokasiBackup count: '.count($alokasiBackup));
 
@@ -87,7 +96,7 @@ class DayaSerapController extends Controller
                     WHERE ( backupRkat.id_duplikasi = ? AND backupRkatDet.id_duplikasi = ? )
                 AND backupRkat.tahun = ?
                 GROUP BY unit.idunit, backupRkat.sd';
-            $realisasi = getBaseData($query, $tahun, $tahunAngka, null, null, [$idBackup, $idBackup, $tahun]); // 2 null parameter karena tidak perlu fitler unit dan sumber dana
+            $realisasi = getBaseData($query, $backupTahun, $backupTahunAngka, null, null, [$idBackup, $idBackup, $backupTahun]);
 
             Log::info('getAlokasiBackup - realisasi count: '.(is_array($realisasi) ? count($realisasi) : 'not array'));
 
