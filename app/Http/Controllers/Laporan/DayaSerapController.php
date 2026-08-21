@@ -101,9 +101,14 @@ class DayaSerapController extends Controller
 
             // Check if tb_backup_alokasi has kode_sd that exists in tb_sumberdana
             $checkJoin = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_backup_alokasi ba
-                INNER JOIN tb_sumberdana sd ON sd.kd_sumberdana = ba.kode_sd AND sd.is_show = 'true' AND sd.is_deleted = 'false'
+                INNER JOIN tb_sumberdana sd ON sd.kd_sumberdana = CONCAT('42', ba.kode_sd) AND sd.is_show = 'true' AND sd.is_deleted = 'false'
                 WHERE ba.id_duplikasi = ?", [$idBackup]);
-            Log::info('getAlokasiBackup - JOIN count (ba + sd): ' . $checkJoin[0]->count);
+            Log::info('getAlokasiBackup - JOIN count (ba + sd) with CONCAT: ' . $checkJoin[0]->count);
+
+            // Check if there's any matching kd_sumberdana
+            $checkMatch = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_sumberdana sd
+                WHERE sd.kd_sumberdana IN (SELECT CONCAT('42', kode_sd) FROM tb_backup_alokasi WHERE id_duplikasi = ?)", [$idBackup]);
+            Log::info('getAlokasiBackup - matching kd_sumberdana count: ' . $checkMatch[0]->count);
 
             // Check if tb_backup_alokasi has idunit that exists in tb_unit_api
             $checkJoinUnit = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_backup_alokasi ba
