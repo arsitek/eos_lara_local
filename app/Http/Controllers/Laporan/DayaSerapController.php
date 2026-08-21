@@ -8,7 +8,6 @@ use Illuminate\Contracts\View\View as ViewContract;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class DayaSerapController extends Controller
@@ -16,7 +15,7 @@ class DayaSerapController extends Controller
     public function index(): ViewContract
     {
         ['tahun' => $tahun, 'tahunAngka' => $tahunAngka] = getTahunData(); // from Helper/rekat.php
-        $dataBackup = DuplikasiRkat::select('id', 'keterangan')->where('keterangan', 'LIKE', '%'.$tahunAngka.'%')->get();
+        $dataBackup = DuplikasiRkat::select('id', 'keterangan')->orderBy('id', 'desc')->get();
 
         return view('content.laporan.DAYASERAP.index', compact('dataBackup'));
     }
