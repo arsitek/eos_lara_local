@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View as ViewContract;
+use Illuminate\Support\Facades\DB;
 
 class StatistikController extends Controller
 {
@@ -27,6 +26,8 @@ class StatistikController extends Controller
         WHERE ba.id_duplikasi = ?
         ORDER BY sd.kd_sumberdana, ba.idunit", [$idBackup]);
 
+        Log::info('StatistikController - alokasiBackup count: '.count($alokasiBackup));
+
         // Realisasi Backup
         $realisasiBackup = DB::connection('sirekat')->select("SELECT
             unit.nama AS unit_kerja,
@@ -43,10 +44,12 @@ class StatistikController extends Controller
           AND backupRkat.tahun = 'Definitif_2026'
         GROUP BY unit.idunit, backupRkat.sd", [$idBackup, $idBackup]);
 
+        Log::info('StatistikController - realisasiBackup count: '.count($realisasiBackup));
+
         // Gabungkan data alokasi dan realisasi
         $dataDayaSerap = [];
         foreach ($alokasiBackup as $alokasi) {
-            $key = $alokasi->unit_kerja . '_' . $alokasi->kd_sumberdana;
+            $key = $alokasi->unit_kerja.'_'.$alokasi->kd_sumberdana;
             $dataDayaSerap[$key] = [
                 'unit_kerja' => $alokasi->unit_kerja,
                 'kd_sumberdana' => $alokasi->kd_sumberdana,
@@ -54,12 +57,12 @@ class StatistikController extends Controller
                 'pagu_alokasi' => $alokasi->pagu_alokasi,
                 'realisasi' => 0,
                 'daya_serap' => $alokasi->pagu_alokasi,
-                'persentase' => 0
+                'persentase' => 0,
             ];
         }
 
         foreach ($realisasiBackup as $realisasi) {
-            $key = $realisasi->unit_kerja . '_' . $realisasi->kd_sumberdana;
+            $key = $realisasi->unit_kerja.'_'.$realisasi->kd_sumberdana;
             if (isset($dataDayaSerap[$key])) {
                 $dataDayaSerap[$key]['realisasi'] = $realisasi->realisasi;
                 $dataDayaSerap[$key]['daya_serap'] = $dataDayaSerap[$key]['pagu_alokasi'] - $realisasi->realisasi;
