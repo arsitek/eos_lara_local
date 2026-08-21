@@ -178,6 +178,18 @@
       ]
     },
     {
+      "name": "Statistik",
+      "icon": "menu-icon icon-base ti tabler-chart-bar",
+      "slug": "statistik",
+      "submenu": [
+        {
+          "url": "statistik/dayaserap",
+          "name": "Daya Serap",
+          "slug": "statistik-dayaserap"
+        }
+      ]
+    },
+    {
       "name": "Layouts",
       "icon": "menu-icon icon-base ti tabler-layout-sidebar",
       "slug": "layouts",
