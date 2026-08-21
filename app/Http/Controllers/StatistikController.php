@@ -85,6 +85,41 @@ class StatistikController extends Controller
         // Convert associative array to indexed array for DataTable
         $dataDayaSerapArray = array_values($dataDayaSerap);
 
-        return view('statistik.dayaserap', compact('dataDayaSerapArray', 'backupKeterangan'));
+        // Hitung data akumulasi per unit untuk 5 unit dengan daya serap terendah
+        $dataPerUnit = [];
+        foreach ($dataDayaSerapArray as $item) {
+            $unit = $item['unit_kerja'];
+            if (!isset($dataPerUnit[$unit])) {
+                $dataPerUnit[$unit] = [
+                    'unit_kerja' => $unit,
+                    'total_pagu_alokasi' => 0,
+                    'total_realisasi' => 0,
+                    'total_daya_serap' => 0,
+                    'avg_persentase' => 0,
+                    'count' => 0
+                ];
+            }
+            $dataPerUnit[$unit]['total_pagu_alokasi'] += $item['pagu_alokasi'];
+            $dataPerUnit[$unit]['total_realisasi'] += $item['realisasi'];
+            $dataPerUnit[$unit]['total_daya_serap'] += $item['daya_serap'];
+            $dataPerUnit[$unit]['avg_persentase'] += $item['persentase'];
+            $dataPerUnit[$unit]['count']++;
+        }
+
+        // Hitung rata-rata persentase per unit
+        foreach ($dataPerUnit as &$unitData) {
+            if ($unitData['count'] > 0) {
+                $unitData['avg_persentase'] = round($unitData['avg_persentase'] / $unitData['count'], 2);
+            }
+        }
+
+        // Ambil 5 unit dengan daya serap terendah (berdasarkan persentase)
+        usort($dataPerUnit, function($a, $b) {
+            return $a['avg_persentase'] <=> $b['avg_persentase'];
+        });
+
+        $unitTerendah5 = array_slice($dataPerUnit, 0, 5);
+
+        return view('statistik.dayaserap', compact('dataDayaSerapArray', 'backupKeterangan', 'unitTerendah5'));
     }
 }
