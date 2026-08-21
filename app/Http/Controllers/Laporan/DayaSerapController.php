@@ -74,54 +74,10 @@ class DayaSerapController extends Controller
                 $backupTahunAngka = end($parts);
             }
 
-            // Debug logging
-            Log::info('getAlokasiBackup - idBackup: ' . $idBackup);
-            Log::info('getAlokasiBackup - session tahun: ' . $tahun . ', session tahunAngka: ' . $tahunAngka);
-            Log::info('getAlokasiBackup - backup tahun: ' . $backupTahun . ', backup tahunAngka: ' . $backupTahunAngka);
-
-            // Check if tb_backup_alokasi has data for this idBackup
-            $checkAlokasi = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_backup_alokasi WHERE id_duplikasi = ?", [$idBackup]);
-            Log::info('getAlokasiBackup - tb_backup_alokasi count for idBackup ' . $idBackup . ': ' . $checkAlokasi[0]->count);
-
-            // Check if tb_sumberdana has data for this year
-            $checkSumberdana = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_sumberdana WHERE tahun = ?", [$backupTahunAngka]);
-            Log::info('getAlokasiBackup - tb_sumberdana count for tahun ' . $backupTahunAngka . ': ' . $checkSumberdana[0]->count);
-
-            // Check if tb_sumberdana has any data
-            $checkSumberdanaAll = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_sumberdana");
-            Log::info('getAlokasiBackup - tb_sumberdana total count: ' . $checkSumberdanaAll[0]->count);
-
-            // Sample data from tb_backup_alokasi
-            $sampleAlokasi = DB::connection('sirekat')->select("SELECT kode_sd FROM tb_backup_alokasi WHERE id_duplikasi = ? LIMIT 5", [$idBackup]);
-            Log::info('getAlokasiBackup - sample kode_sd from tb_backup_alokasi: ' . json_encode($sampleAlokasi));
-
-            // Sample data from tb_sumberdana
-            $sampleSumberdana = DB::connection('sirekat')->select("SELECT kd_sumberdana, sumberdana FROM tb_sumberdana LIMIT 5");
-            Log::info('getAlokasiBackup - sample kd_sumberdana from tb_sumberdana: ' . json_encode($sampleSumberdana));
-
-            // Check if tb_backup_alokasi has kode_sd that exists in tb_sumberdana
-            $checkJoin = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_backup_alokasi ba
-                INNER JOIN tb_sumberdana sd ON sd.kd_sumberdana = CONCAT('42', ba.kode_sd) AND sd.is_show = 'true' AND sd.is_deleted = 'false'
-                WHERE ba.id_duplikasi = ?", [$idBackup]);
-            Log::info('getAlokasiBackup - JOIN count (ba + sd) with CONCAT: ' . $checkJoin[0]->count);
-
-            // Check if there's any matching kd_sumberdana
-            $checkMatch = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_sumberdana sd
-                WHERE sd.kd_sumberdana IN (SELECT CONCAT('42', kode_sd) FROM tb_backup_alokasi WHERE id_duplikasi = ?)", [$idBackup]);
-            Log::info('getAlokasiBackup - matching kd_sumberdana count: ' . $checkMatch[0]->count);
-
-            // Check if tb_backup_alokasi has idunit that exists in tb_unit_api
-            $checkJoinUnit = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_backup_alokasi ba
-                INNER JOIN tb_unit_api unit ON unit.idunit = ba.idunit
-                WHERE ba.id_duplikasi = ?", [$idBackup]);
-            Log::info('getAlokasiBackup - JOIN count (ba + unit): ' . $checkJoinUnit[0]->count);
-
             $alokasiBackup = DB::connection('sirekat')->select("SELECT sd.sumberdana, ba.*, unit.nama FROM tb_backup_alokasi ba
                 INNER JOIN tb_sumberdana sd ON sd.kd_sumberdana = ba.kode_sd AND sd.is_show = 'true' AND sd.is_deleted = 'false'
                 INNER JOIN tb_unit_api unit ON unit.idunit = ba.idunit WHERE ba.id_duplikasi = ? ORDER BY sd.kd_sumberdana, ba.idunit",
                 [$idBackup]);
-
-            Log::info('getAlokasiBackup - alokasiBackup count: '.count($alokasiBackup));
 
             $query = ' SELECT unit.nama AS nama_unit, unit.idunit AS unit_kerja_rkt,
                         sd.kd_sumberdana, sd.sumberdana,
