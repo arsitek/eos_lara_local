@@ -19,8 +19,8 @@
         },
         {
           "url": "dashboard/eos",
-          "name": "EOS",
-          "icon": "menu-icon icon-base ti tabler-vector-bezier-circle",
+          "name": "Executive Cockpit",
+          "icon": "menu-icon icon-base ti tabler-air-traffic-control",
           "slug": "dashboard-eos"
         },
         {
