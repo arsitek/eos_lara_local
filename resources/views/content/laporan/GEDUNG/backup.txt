@@ -1,0 +1,58 @@
+ -----------------------------------------------------------------------------------------------------------------------------------------
+ {{--  <div class="row">
+                            <div class="col-md-6"></div>
+                                <div class="col-md-6">
+                                    <div class="btn-group mt-2 mb-2">
+                                    <button type="button" class="px-1 py-1 btn btn-github btn-pill dropdown-toggle" data-bs-toggle="dropdown"> <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu list" role="menu"  style="word-wrap:break-word;" >
+                                        <li class="dropdown-plus-title">
+                                            Pilih
+                                        <b class="fa fa-angle-up" aria-hidden="true"></b>
+                                        </li> 
+                                    </ul>
+                                </div>
+                            </div>
+                            </div> --}}
+                     {{--        <div class="row">
+                                <div class="col-md-8">
+                                      <button class="px-1 py-1 btn btn-github btn-pill dropdown-toggle d-block mb-5 rincian_kegiatan" data-bs-toggle="modal" data-bs-target="#fullscreenmodal"><span class="caret"></span></button>
+                                </div>
+                                <div class="col-md-4">
+                                     <span class="refresh px-1 py-1 bg-primary" style="cursor: pointer;">R</span>
+                                </div>
+                            </div> --}}
+
+------------------------------------------------------------------------------------------------------------------------------------------
+ $.ajax({
+                type: 'POST',
+                url: "{{ route('rekat.insertPDF')}}",
+                data: new FormData(torFORM[0]),
+                contentType: false,
+                cache: false,
+                processData:false,
+                beforeSend: function(){
+                    console.log("Loading ... ")
+                },
+                // ON SUCCESS :
+                success: function(data){
+                    console.log(data)
+                     // if(resp == 'ok'){
+                     //     $('#uploadForm')[0].reset();
+                     //     $('#uploadStatus').html('<p style="color:#28A74B;">File berhasil diupload!</p>');
+                     // }else if(resp == 'err'){
+                     //     $('#uploadStatus').html('<p style="color:#EA4335;">Silakan pilih file yang valid untuk diupload.</p>');
+                     // }
+                },
+                // ON ERROR :
+                error: function (request, status, error) {
+                    if( error == 'Content Too Large' ){
+                        Swal.fire({
+                            icon: 'error',
+                            title: "Ukuran file terlalu besar!. Tidak lebih dari 300Kb"
+                        })
+                    }
+                    console.log(error)
+                    return false;
+                }
+            }) // END Ajax pdf upload

@@ -1,0 +1,115 @@
+@extends('layout.layout')
+@section('title', 'laporan rekat')
+@section('content')
+<div class="row mt-5">
+    <div class="col-lg-12">
+        <div class="row mb-5">
+            {{-- Berdasarkan rab atau keseluruhan --}}
+            {{-- <div class="col-lg-4">
+                <select name="filter" class="s filter select2" style="width: 200px">
+                    <option value="Semua">Semua Rab</option>
+                    <option value="Rab">Berdasarkan Rab</option>
+                </select>
+            </div> --}}
+        </div>
+
+        <div class="row mb-5 unitkerja-select">
+            <div class="col-lg-4">
+                <select name="unitkerja" id="" class="select2 s unitkerja">
+                    @if (session()->get('role') == "superadmin" || session()->get('role') == "verifikator")
+                    <option value="semua-unit">Semua Unit Kerja</option>
+                    @foreach ($semua_unit as $unit)
+                    <option value="{{ $unit->idunit }}" @if(session()->get('unitkerja') == $unit->idunit)
+                        selected="selected" @endif>{{ $unit->unitkerja }}</option>
+                    @endforeach
+                    @else
+                    <option value="{{session()->get('unitkerja')}}">{{ session()->get('unitkerja_nama') }}</option>
+                    @endif
+                </select>
+            </div>
+            <div class="col-lg-4 pull-right">
+                <select name="unitkerja" id="" class="select2 s tahun" style="width:100px">
+                    @foreach ($semua_tahun as $tahun)
+                    <option value="{{ $tahun->tahun }}">{{ $tahun->tahun }}</option>
+                    @endforeach
+                </select>
+                <button class="btn btn-info cari">Cari</button>
+            </div>
+        </div>
+
+        {{-- KESELURUHAN --}}
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">REKAT</h3>
+            </div>
+            <div class="card-body">
+                <div style="margin-bottom: 10px;">
+                    <a role="button" id="exportPDF" href="{{ route('rktReport.rekatPdf')}}"
+                        class="btn btn-secondary bg-info-gradient btn-pill"><i class="fa fa-print"></i> PRINT TO PDF</a>
+                    <a role="button" id="exportEXCEL" href='{{ route("rktReport.rekatXls")}}'
+                        class="btn btn-secondary bg-success-gradient btn-pill"><i class="bi bi-table"></i> SAVE TO
+                        EXCEL</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="tabel-rekat table table-bordered border mb-0">
+                        <thead>
+                            <tr>
+                                <th>Unit<span style="visibility:hidden;">_</span>kerja</th>
+                                <th>Sasaran<span style="visibility: hidden;" id="under">_</span>Program</th>
+                                <th>INDIKATOR<span style="visibility: hidden;" id="under">_</span>KINERJA<span
+                                        style="visibility: hidden;" id="under">_</span>KEGIATAN</th>
+                                <th>Rincian<span style="visibility: hidden;">_</span>Kegiatan</th>
+                                {{-- <th>tor</th> --}}
+                                <th>Rincian Sub Komponen</th>
+                                <th>Jenis Belanja</th>
+                                <th>Kebutuhan Kegiatan</th>
+                                <th>Jumlah Biaya (RP)</th>
+                            </tr>
+                        </thead>
+                        <tbody body>
+                        @foreach($raw_rekat as $data)  
+                        <tr>
+                            <td>{{ $data->unit->unitkerja ?? '-'}}</td>
+                            <td>{{ $data->sasaran_program }}</td>
+                            <td>{{$data->indikator_kinerja_kegiatan}}</td>
+                            <td>{{$data->rincian_kegiatan}}</td>
+                            <td>{{$data->rincian_komponen}}</td>
+                            <td>{{$data->jenis_belanja }}</td>
+                            <td>
+                                @if($data->KEBUTUHAN_GDG != NULL)
+                                {{ $data->KEBUTUHAN_GDG }}
+                                @elseif($data->KEBUTUHAN_PER != NULL)
+                                {{ $data->KEBUTUHAN_PER }}
+                                @elseif($data->KEBUTUHAN_KEG != NULL)
+                                {{ $data->KEBUTUHAN_KEG }}
+                                @endif
+                            </td>
+                            <td>
+                                @if($data->TOTAL_GEDUNG != NULL)
+                                {{ $data->TOTAL_GEDUNG }}
+                                @elseif($data->TOTAL_PERALATAN != NULL)
+                                {{ $data->TOTAL_PERALATAN}}
+                                @elseif($data->TOTAL_KEGIATAN != NULL)
+                                {{ $data->TOTAL_KEGIATAN }}
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+  
+    </div>
+</div>
+@endsection
+
+@push('yss')
+@include('REKAT.css')
+@endpush
+
+@push('scripts')
+@include('LAPORAN.REKAT.script')
+@endpush
