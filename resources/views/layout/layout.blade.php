@@ -529,27 +529,6 @@
         }, delay)
       }
     }
-    const getKodefikasiAset = async () => {
-      $('.kodefikasi_aset').select2({
-        placeholder: 'Silahkan pilih',
-        ajax: {
-          url: " {{ route('rabper.sapras') }}",
-          dataType: 'json',
-          delay: 250,
-          processResults: function(data) {
-            return {
-              results: $.map(data, function(item) {
-                return {
-                  text: `${item.kode} | ${item.nama}`,
-                  id: item.kode
-                }
-              })
-            }
-          },
-          cache: true
-        }
-      })
-    }
     const capitalizeFirstLetter = (string) => {
       return string.charAt(0).toUpperCase() + string.slice(1)
     }
