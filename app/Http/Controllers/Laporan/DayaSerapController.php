@@ -79,6 +79,14 @@ class DayaSerapController extends Controller
             Log::info('getAlokasiBackup - session tahun: ' . $tahun . ', session tahunAngka: ' . $tahunAngka);
             Log::info('getAlokasiBackup - backup tahun: ' . $backupTahun . ', backup tahunAngka: ' . $backupTahunAngka);
 
+            // Check if tb_backup_alokasi has data for this idBackup
+            $checkAlokasi = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_backup_alokasi WHERE id_duplikasi = ?", [$idBackup]);
+            Log::info('getAlokasiBackup - tb_backup_alokasi count for idBackup ' . $idBackup . ': ' . $checkAlokasi[0]->count);
+
+            // Check if tb_sumberdana has data for this year
+            $checkSumberdana = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_sumberdana WHERE tahun = ?", [$backupTahunAngka]);
+            Log::info('getAlokasiBackup - tb_sumberdana count for tahun ' . $backupTahunAngka . ': ' . $checkSumberdana[0]->count);
+
             $alokasiBackup = DB::connection('sirekat')->select("SELECT sd.sumberdana, ba.*, unit.nama FROM tb_backup_alokasi ba
                 INNER JOIN tb_sumberdana sd ON sd.kd_sumberdana = ba.kode_sd AND sd.is_show = 'true' AND sd.is_deleted = 'false' AND sd.tahun = ?
                 INNER JOIN tb_unit_api unit ON unit.idunit = ba.idunit WHERE ba.id_duplikasi = ? ORDER BY sd.kd_sumberdana, ba.idunit",
