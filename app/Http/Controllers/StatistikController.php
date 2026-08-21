@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View as ViewContract;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class StatistikController extends Controller
 {
@@ -11,6 +12,22 @@ class StatistikController extends Controller
     {
         // Query untuk mendapatkan data daya serap dari backup Mei 2026 (idBackup = 73)
         $idBackup = 73;
+
+        // Check if tb_backup_alokasi has data for this idBackup
+        $checkAlokasi = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_backup_alokasi WHERE id_duplikasi = ?", [$idBackup]);
+        Log::info('StatistikController - tb_backup_alokasi count for idBackup ' . $idBackup . ': ' . $checkAlokasi[0]->count);
+
+        // Check if tb_sumberdana has data
+        $checkSumberdana = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_sumberdana");
+        Log::info('StatistikController - tb_sumberdana total count: ' . $checkSumberdana[0]->count);
+
+        // Sample data from tb_backup_alokasi
+        $sampleAlokasi = DB::connection('sirekat')->select("SELECT id_duplikasi, kode_sd, idunit FROM tb_backup_alokasi WHERE id_duplikasi = ? LIMIT 5", [$idBackup]);
+        Log::info('StatistikController - sample data from tb_backup_alokasi: ' . json_encode($sampleAlokasi));
+
+        // Sample data from tb_sumberdana
+        $sampleSumberdana = DB::connection('sirekat')->select("SELECT kd_sumberdana, sumberdana FROM tb_sumberdana LIMIT 5");
+        Log::info('StatistikController - sample data from tb_sumberdana: ' . json_encode($sampleSumberdana));
 
         // Alokasi Backup
         $alokasiBackup = DB::connection('sirekat')->select("SELECT
