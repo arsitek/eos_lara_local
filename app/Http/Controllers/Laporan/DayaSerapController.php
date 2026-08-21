@@ -87,6 +87,22 @@ class DayaSerapController extends Controller
             $checkSumberdana = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_sumberdana WHERE tahun = ?", [$backupTahunAngka]);
             Log::info('getAlokasiBackup - tb_sumberdana count for tahun ' . $backupTahunAngka . ': ' . $checkSumberdana[0]->count);
 
+            // Check if tb_sumberdana has any data
+            $checkSumberdanaAll = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_sumberdana");
+            Log::info('getAlokasiBackup - tb_sumberdana total count: ' . $checkSumberdanaAll[0]->count);
+
+            // Check if tb_backup_alokasi has kode_sd that exists in tb_sumberdana
+            $checkJoin = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_backup_alokasi ba
+                INNER JOIN tb_sumberdana sd ON sd.kd_sumberdana = ba.kode_sd AND sd.is_show = 'true' AND sd.is_deleted = 'false'
+                WHERE ba.id_duplikasi = ?", [$idBackup]);
+            Log::info('getAlokasiBackup - JOIN count (ba + sd): ' . $checkJoin[0]->count);
+
+            // Check if tb_backup_alokasi has idunit that exists in tb_unit_api
+            $checkJoinUnit = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_backup_alokasi ba
+                INNER JOIN tb_unit_api unit ON unit.idunit = ba.idunit
+                WHERE ba.id_duplikasi = ?", [$idBackup]);
+            Log::info('getAlokasiBackup - JOIN count (ba + unit): ' . $checkJoinUnit[0]->count);
+
             $alokasiBackup = DB::connection('sirekat')->select("SELECT sd.sumberdana, ba.*, unit.nama FROM tb_backup_alokasi ba
                 INNER JOIN tb_sumberdana sd ON sd.kd_sumberdana = ba.kode_sd AND sd.is_show = 'true' AND sd.is_deleted = 'false'
                 INNER JOIN tb_unit_api unit ON unit.idunit = ba.idunit WHERE ba.id_duplikasi = ? ORDER BY sd.kd_sumberdana, ba.idunit",
