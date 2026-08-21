@@ -28,7 +28,15 @@
       "App\\": "app/",
       "Database\\Factories\\": "database/factories/",
       "Database\\Seeders\\": "database/seeders/"
-    }
+    },
+    "files": [
+      "app/Helper/urls.php",
+      "app/Helper/roles.php",
+      "app/Helper/sso.php",
+      "app/Helper/rekat.php",
+      "app/Helper/rka.php",
+      "app/Helper/ppk.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
