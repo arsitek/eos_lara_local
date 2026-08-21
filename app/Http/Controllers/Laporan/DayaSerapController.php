@@ -91,6 +91,14 @@ class DayaSerapController extends Controller
             $checkSumberdanaAll = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_sumberdana");
             Log::info('getAlokasiBackup - tb_sumberdana total count: ' . $checkSumberdanaAll[0]->count);
 
+            // Sample data from tb_backup_alokasi
+            $sampleAlokasi = DB::connection('sirekat')->select("SELECT kode_sd FROM tb_backup_alokasi WHERE id_duplikasi = ? LIMIT 5", [$idBackup]);
+            Log::info('getAlokasiBackup - sample kode_sd from tb_backup_alokasi: ' . json_encode($sampleAlokasi));
+
+            // Sample data from tb_sumberdana
+            $sampleSumberdana = DB::connection('sirekat')->select("SELECT kd_sumberdana, sumberdana FROM tb_sumberdana LIMIT 5");
+            Log::info('getAlokasiBackup - sample kd_sumberdana from tb_sumberdana: ' . json_encode($sampleSumberdana));
+
             // Check if tb_backup_alokasi has kode_sd that exists in tb_sumberdana
             $checkJoin = DB::connection('sirekat')->select("SELECT COUNT(*) as count FROM tb_backup_alokasi ba
                 INNER JOIN tb_sumberdana sd ON sd.kd_sumberdana = ba.kode_sd AND sd.is_show = 'true' AND sd.is_deleted = 'false'
