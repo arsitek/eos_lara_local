@@ -226,12 +226,12 @@
                         <tbody class="body-tbl-unit"></tbody>
                     </table>
                 </div>
-                @include('content.laporan.REKAT_UK.modalinfo")
-                @include('content.laporan.REKAT_UK.modalppk")
-                @include('content.laporan.REKAT_UK.modalStatus")
-                @include('content.laporan.REKAT_UK.modalPpkNull")
-                @include('content.laporan.REKAT_UK.modalCustomExport")
-                @include("VERIFIKASI.COMPONENTS.modalTor")
+                @include('content.laporan.REKAT_UK.modalinfo')
+                @include('content.laporan.REKAT_UK.modalppk')
+                @include('content.laporan.REKAT_UK.modalStatus')
+                @include('content.laporan.REKAT_UK.modalPpkNull')
+                @include('content.laporan.REKAT_UK.modalCustomExport')
+                @include('VERIFIKASI.COMPONENTS.modalTor')
             </div>
         </div>
     </div>
