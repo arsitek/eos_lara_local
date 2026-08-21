@@ -142,6 +142,14 @@ class StatistikController extends Controller
 
         $unitTerendah5 = array_slice($dataPerUnit, 0, 5);
 
-        return view('statistik.dayaserap', compact('dataDayaSerapArray', 'backupKeterangan', 'unitTerendah5', 'totalSemua', 'backupTahun'));
+        // Ambil unit dengan persentase daya serap > 100%
+        $unitDiatas100 = [];
+        foreach ($dataPerUnit as $unitData) {
+            if ($unitData['avg_persentase'] > 100) {
+                $unitDiatas100[] = $unitData;
+            }
+        }
+
+        return view('statistik.dayaserap', compact('dataDayaSerapArray', 'backupKeterangan', 'unitTerendah5', 'totalSemua', 'backupTahun', 'unitDiatas100'));
     }
 }

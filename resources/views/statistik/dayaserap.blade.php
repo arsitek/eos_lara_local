@@ -154,6 +154,42 @@
   </div>
   <!--/ 5 Unit dengan Daya Serap Terendah -->
 
+  <!-- Daftar Unit dengan Persentase Daya Serap > 100% -->
+  <div class="card mb-4">
+    <h5 class="card-header pb-0">Daftar Unit dengan Persentase Daya Serap > 100%</h5>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped mb-0">
+          <thead>
+            <tr>
+              <th>UNIT KERJA</th>
+              <th class="text-end">TOTAL PAGU ALOKASI</th>
+              <th class="text-end">TOTAL REALISASI</th>
+              <th class="text-end">TOTAL DAYA SERAP</th>
+              <th class="text-end">RATA-RATA PERSENTASE</th>
+            </tr>
+          </thead>
+          <tbody>
+            @forelse($unitDiatas100 ?? [] as $unit)
+              <tr>
+                <td>{{ $unit['unit_kerja'] }}</td>
+                <td class="text-end">{{ number_format($unit['total_pagu_alokasi'], 0, ',', '.') }}</td>
+                <td class="text-end">{{ number_format($unit['total_realisasi'], 0, ',', '.') }}</td>
+                <td class="text-end">{{ number_format($unit['total_daya_serap'], 0, ',', '.') }}</td>
+                <td class="text-end text-danger fw-bold">{{ $unit['avg_persentase'] }}%</td>
+              </tr>
+            @empty
+              <tr>
+                <td colspan="5" class="text-center">Tidak ada unit dengan persentase daya serap > 100%</td>
+              </tr>
+            @endforelse
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!--/ Daftar Unit dengan Persentase Daya Serap > 100% -->
+
   <!-- Daya Serap DataTable -->
   <div class="card">
     <h5 class="card-header pb-0 text-md-start text-center">RINCIAN DAYA SERAP -
