@@ -21,7 +21,7 @@
   <!-- Daya Serap DataTable -->
   <div class="card">
     <h5 class="card-header pb-0 text-md-start text-center">DAYA SERAP - {{ $backupKeterangan ?? 'Data Terbaru' }}</h5>
-    <div class="card-datatable text-nowrap">
+    <div class="card-datatable">
       <table class="dt-dayaserap table table-bordered" id="dayaSerapTable">
         <thead>
           <tr>

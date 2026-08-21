@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         {
           data: 'sumberdana',
           width: '15%',
+          className: 'text-wrap',
           render: function (data, type, row) {
             return data || '-';
           }
