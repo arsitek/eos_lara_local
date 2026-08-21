@@ -453,7 +453,8 @@
       const val = $(e.target).val()
       if (val == "" || !val)
         return window.dayaserap.methods.showDataNotFound()
-      return window.dayaserap.methods.getAlokasiData()
+      if (val == "current")
+        return window.dayaserap.methods.getAlokasiData()
       if (val != "current")
         return window.dayaserap.methods.getBackupData(val)
     }
