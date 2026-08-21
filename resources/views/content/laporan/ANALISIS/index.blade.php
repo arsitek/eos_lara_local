@@ -1,4 +1,4 @@
-@extends('layouts/layoutMaster')
+@extends('layout.layout')
 @section('title', 'Laporan | Analisis')
 @push('yss')
     @include('content.laporan.ANALISIS.css')

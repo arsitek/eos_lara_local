@@ -1,4 +1,4 @@
-@extends('layouts/layoutMaster')
+@extends('layout.layout')
 @section('title', 'Laporan | Pendapatan')
 @section('content')
 @php

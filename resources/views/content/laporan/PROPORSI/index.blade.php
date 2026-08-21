@@ -1,4 +1,4 @@
-@extends('layouts/layoutMaster')
+@extends('layout.layout')
 @section('title', 'Laporan | Proporsi Anggaran')
 @push('yss')
     @include('content.laporan.PROPORSI.css')

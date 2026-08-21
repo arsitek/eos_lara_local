@@ -1,4 +1,4 @@
-@extends('layouts/layoutMaster')
+@extends('layout.layout')
 @section('title', 'Laporan | RPD')
 @push('yss')
     @include('content.laporan.RPD.css')

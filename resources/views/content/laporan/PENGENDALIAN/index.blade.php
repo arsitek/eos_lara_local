@@ -1,4 +1,4 @@
-@extends('layouts/layoutMaster')
+@extends('layout.layout')
 @section('title', 'Laporan | Pengendalian')
 @section('content')
 <div class="row mt-5">

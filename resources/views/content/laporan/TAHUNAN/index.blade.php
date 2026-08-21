@@ -1,4 +1,4 @@
-@extends('layouts/layoutMaster')
+@extends('layout.layout')
 @section('title', 'Rekap | Tahunan')
 @push('yss')
     @include('content.laporan.TAHUNAN.style')

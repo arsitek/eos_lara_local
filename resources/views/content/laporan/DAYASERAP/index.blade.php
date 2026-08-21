@@ -1,4 +1,4 @@
-@extends('layouts/layoutMaster')
+@extends('layout.layout')
 @section('title', 'Laporan | Daya Serap')
 @push('yss')
     @include('content.laporan.DAYASERAP.css')

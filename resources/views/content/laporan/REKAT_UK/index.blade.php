@@ -1,4 +1,4 @@
-@extends('layouts/layoutMaster')
+@extends('layout.layout')
 @section('title', 'Laporan | RKA')
 @push('yss')
     @include('content.laporan.REKAT_UK.css')

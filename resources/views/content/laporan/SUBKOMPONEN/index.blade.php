@@ -1,4 +1,4 @@
-@extends('layouts/layoutMaster')
+@extends('layout.layout')
 @section('title', 'Rekap | Subkomponen')
 @include('content.laporan.SUBKOMPONEN.style')
 @section('content')
