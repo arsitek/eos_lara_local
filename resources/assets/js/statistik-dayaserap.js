@@ -5,44 +5,46 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', function (e) {
+  console.log('Data Daya Serap:', window.dataDayaSerap);
+
   const dt_dayaserap_table = document.querySelector('.dt-dayaserap');
   if (dt_dayaserap_table) {
     let dt_dayaserap = new DataTable(dt_dayaserap_table, {
       data: window.dataDayaSerap || [],
       columns: [
-        { 
+        {
           data: 'unit_kerja',
-          render: function(data, type, row) {
+          render: function (data, type, row) {
             return data || '-';
           }
         },
-        { 
+        {
           data: 'sumberdana',
-          render: function(data, type, row) {
+          render: function (data, type, row) {
             return data || '-';
           }
         },
-        { 
+        {
           data: 'pagu_alokasi',
-          render: function(data, type, row) {
+          render: function (data, type, row) {
             return type === 'display' ? new Intl.NumberFormat('id-ID').format(data) : data;
           }
         },
-        { 
+        {
           data: 'realisasi',
-          render: function(data, type, row) {
+          render: function (data, type, row) {
             return type === 'display' ? new Intl.NumberFormat('id-ID').format(data) : data;
           }
         },
-        { 
+        {
           data: 'daya_serap',
-          render: function(data, type, row) {
+          render: function (data, type, row) {
             return type === 'display' ? new Intl.NumberFormat('id-ID').format(data) : data;
           }
         },
-        { 
+        {
           data: 'persentase',
-          render: function(data, type, row) {
+          render: function (data, type, row) {
             return type === 'display' ? data + '%' : data;
           }
         }
