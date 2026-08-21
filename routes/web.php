@@ -421,3 +421,10 @@ Route::get('/laporan/rpdunit/get', [RpdUnitController::class, 'getDataRpdNotNull
 // Laporan Data Error
 Route::get('/laporan/dataerror', [DataErrorController::class, 'index'])->name("dataerror.index");
 Route::get('/laporan/dataerror/get', [DataErrorController::class, 'getDataPPKNull'])->name("dataerror.get");
+
+// =========================================================================
+// Statistik Module Routes
+// =========================================================================
+use App\Http\Controllers\StatistikController;
+
+Route::get('/statistik/dayaserap', [StatistikController::class, 'dayaSerap'])->name('statistik.dayaserap');
