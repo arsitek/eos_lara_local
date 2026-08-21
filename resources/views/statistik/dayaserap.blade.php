@@ -19,39 +19,97 @@
 
 @section('content')
   <!-- Total Semua Unit -->
-  <div class="card mb-4">
-    <h5 class="card-header pb-0">TOTAL SEMUA UNIT</h5>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-3">
-          <div class="card bg-light">
-            <div class="card-body">
-              <h6 class="card-title mb-1">TOTAL PAGU ALOKASI</h6>
-              <h4 class="card-text mb-0">{{ number_format($totalSemua['total_pagu_alokasi'] ?? 0, 0, ',', '.') }}</h4>
+  <div class="card bg-transparent shadow-none my-6 border-0">
+    <div class="card-body row p-0 pb-6 g-6">
+      <div class="col-12">
+        <h5 class="mb-2">TOTAL SEMUA UNIT</h5>
+        <div class="col-12 col-lg-8">
+          <p>Ringkasan total pagu alokasi, realisasi, daya serap, dan rata-rata persentase untuk seluruh unit.</p>
+        </div>
+        <div class="d-flex justify-content-between flex-wrap gap-4 me-12">
+          <div class="d-flex align-items-center gap-4 me-6 me-sm-0">
+            <div class="avatar avatar-lg">
+              <div class="avatar-initial bg-label-primary rounded">
+                <div class="text-primary">
+                  <svg width="38" height="38" viewBox="0 0 38 38" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g id="Wallet">
+                      <path id="Vector" opacity="0.2" d="M5.9375 11.875V26.125H32.0625V11.875H5.9375Z"
+                        fill="currentColor" />
+                      <path id="Vector_2"
+                        d="M5.9375 11.875V26.125H32.0625V11.875M5.9375 11.875H32.0625M5.9375 11.875L8.3125 8.3125H29.6875L32.0625 11.875M5.9375 26.125L8.3125 29.6875H29.6875L32.0625 26.125"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </g>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="content-right">
+              <p class="mb-0 fw-medium">TOTAL PAGU ALOKASI</p>
+              <h4 class="text-primary mb-0">{{ number_format($totalSemua['total_pagu_alokasi'] ?? 0, 0, ',', '.') }}</h4>
             </div>
           </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card bg-light">
-            <div class="card-body">
-              <h6 class="card-title mb-1">TOTAL REALISASI</h6>
-              <h4 class="card-text mb-0">{{ number_format($totalSemua['total_realisasi'] ?? 0, 0, ',', '.') }}</h4>
+          <div class="d-flex align-items-center gap-4">
+            <div class="avatar avatar-lg">
+              <div class="avatar-initial bg-label-success rounded">
+                <div class="text-success">
+                  <svg width="38" height="38" viewBox="0 0 38 38" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g id="TrendingUp">
+                      <path id="Vector" opacity="0.2" d="M5.9375 26.125L14.25 17.8125L19 22.5625L32.0625 9.5"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      <path id="Vector_2" d="M32.0625 9.5H23.75M32.0625 9.5V17.8125" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </g>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="content-right">
+              <p class="mb-0 fw-medium">TOTAL REALISASI</p>
+              <h4 class="text-success mb-0">{{ number_format($totalSemua['total_realisasi'] ?? 0, 0, ',', '.') }}</h4>
             </div>
           </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card bg-light">
-            <div class="card-body">
-              <h6 class="card-title mb-1">TOTAL DAYA SERAP</h6>
-              <h4 class="card-text mb-0">{{ number_format($totalSemua['total_daya_serap'] ?? 0, 0, ',', '.') }}</h4>
+          <div class="d-flex align-items-center gap-4">
+            <div class="avatar avatar-lg">
+              <div class="avatar-initial bg-label-info rounded">
+                <div class="text-info">
+                  <svg width="38" height="38" viewBox="0 0 38 38" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g id="Activity">
+                      <path id="Vector" opacity="0.2"
+                        d="M5.9375 19L14.25 19L19 11.875L23.75 26.125L28.5 19L32.0625 19" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </g>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="content-right">
+              <p class="mb-0 fw-medium">TOTAL DAYA SERAP</p>
+              <h4 class="text-info mb-0">{{ number_format($totalSemua['total_daya_serap'] ?? 0, 0, ',', '.') }}</h4>
             </div>
           </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card bg-light">
-            <div class="card-body">
-              <h6 class="card-title mb-1">RATA-RATA PERSENTASE</h6>
-              <h4 class="card-text mb-0">{{ $totalSemua['avg_persentase'] ?? 0 }}%</h4>
+          <div class="d-flex align-items-center gap-4">
+            <div class="avatar avatar-lg">
+              <div class="avatar-initial bg-label-warning rounded">
+                <div class="text-warning">
+                  <svg width="38" height="38" viewBox="0 0 38 38" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g id="Percent">
+                      <path id="Vector" opacity="0.2" d="M11.875 26.125L26.125 11.875" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      <path id="Vector_2"
+                        d="M11.875 11.875H14.25M11.875 11.875V14.25M26.125 26.125H23.75M26.125 26.125V23.75"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </g>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="content-right">
+              <p class="mb-0 fw-medium">RATA-RATA PERSENTASE</p>
+              <h4 class="text-warning mb-0">{{ $totalSemua['avg_persentase'] ?? 0 }}%</h4>
             </div>
           </div>
         </div>
