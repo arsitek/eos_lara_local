@@ -1,0 +1,160 @@
+@extends('layout.layout')
+@section('title', 'Verifikasi | Rab Langganan')
+@section('content')
+    <div class="row mt-5">
+        <div class="col-lg-8 mb-3 mx-2" >
+            <div class="table-header-phone" style="display: none">
+                <div class="d-flex flex-column">
+                    <label for="unitkerja" class="text-muted">Unitkerja</label>
+                    @include("VERIFIKASI.COMPONENTS.unitkerja")
+                </div>
+                <div class="d-flex flex-column my-2">
+                    <label for="sumberdana" class="text-muted">Sumberdana</label>
+                    @include("VERIFIKASI.COMPONENTS.sumberdana")
+                </div>
+                <div class="d-flex flex-column my-2">
+                    <button class="btn-filter-unitkerja btn btn-info px-3 py-1 ml-5" style="width: 150px">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="10%" class="me-1 searchSVG">
+                            <path d="M8.25 10.875a2.625 2.625 0 1 1 5.25 0 2.625 2.625 0 0 1-5.25 0Z" />
+                            <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.125 4.5a4.125 4.125 0 1 0 2.338 7.524l2.007 2.006a.75.75 0 1 0 1.06-1.06l-2.006-2.007a4.125 4.125 0 0 0-3.399-6.463Z" clip-rule="evenodd" />
+                        </svg>
+                        Submit
+                    </button>
+                </div>
+                {{-- <div class="d-flex flex-column my-2">
+                    <label for="proporsi-alokasi" class="text-muted">Proporsi Alokasi</label>
+                    <span>-</span>
+                </div>
+                <div class="d-flex flex-column my-2">
+                    <label for="alokasi-anggaran" class="text-muted">Anggaran Teralokasi</label>
+                    <span class="alokasi-anggaran"></span>
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="anggaran-terpetakan" class="text-muted">Anggaran Terpetakan</label>
+                    <span class="anggaran-terpetakan"></span>
+                </div> --}}
+            </div>
+            <table class="table-header-desktop">
+                <tr>
+                    <th style="min-width: 150px">Unit Kerja</th>
+                    <th>
+                        @include("VERIFIKASI.COMPONENTS.unitkerja")
+                    </th>
+                    <th>
+                        @include("VERIFIKASI.COMPONENTS.sumberdana")
+                    </th>
+                    <th>
+                        <button class="btn-filter-unitkerja btn btn-info px-3 py-1 ml-5" style="width: 150px">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="10%" class="me-1 searchSVG">
+                                <path d="M8.25 10.875a2.625 2.625 0 1 1 5.25 0 2.625 2.625 0 0 1-5.25 0Z" />
+                                <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.125 4.5a4.125 4.125 0 1 0 2.338 7.524l2.007 2.006a.75.75 0 1 0 1.06-1.06l-2.006-2.007a4.125 4.125 0 0 0-3.399-6.463Z" clip-rule="evenodd" />
+                            </svg>
+                            Submit
+                        </button>
+                    </th>
+                </tr>
+                {{-- <tr>
+                    <th style="width: 200px">Proporsi Alokasi</th>
+                    <th class="proporsi-alokasi"></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th style="width: 200px">Anggaran Teralokasi</th>
+                    <th class="alokasi-anggaran">{{ $alokasi }}</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th style="width: 200px">Anggaran Terpetakan</th>
+                    <th class="anggaran-terpetakan">{{ $alokasi_terpetakan ?? '0' }}</th>
+                    <th></th>
+                </tr> --}}
+            </table>
+        </div>
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">VERIFIKASI RAB LANGGANAN</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="tabel-verlangganan table table-bordered border mb-0" id="new-edit">
+                            <thead>
+                            <tr>
+                                <th>NO</th>
+                                <th>RINCIAN OUTPUT</th>
+                                <th>SUB KOMPONEN</th>
+                                <th>DETAIL KEGIATAN</th>
+                                <th>TOR</th>
+                                <th>KEBUTUHAN KEGIATAN</th>
+                                <th>TOTAL BIAYA</th>
+                                <th>VERIFIKASI PIMPINAN UNIV</th>
+                                <th>TANGGAPAN</th>
+                                <th>AKSI</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($rablangganan as $item)
+                                <tr>
+                                    <td class="id" key="{{$item->id}}"> {{ $loop->iteration }} </td>
+                                    <td> {{ $item->indikator_kinerja_kegiatan }} </td>
+                                    <td> [ {{ $item->kd_rk . ' ] ' . $item->rincian_kegiatan }} </td>
+                                    <td> {{ $item->sub_judul }} </td>
+                                    <td>
+                                        @if(!empty($item->tor))
+                                            <a href="/rekat/tor?id={{ $item->id_rekat }}" class="document-link" target="_blank" data-id="{{ $item->id_rekat }}" data-subjudul="{{ $item->sub_judul }}">{{ $item->tor }}</a>
+                                        @else
+                                            Tor tidak diupload
+                                        @endif
+                                    </td>
+                                    <td> {!!  $item->kebutuhan_kegiatan . '<br> ( ' .
+                                            $item->kuantitas .' '. $item->satuan_kuantitas .' x '.
+                                            $item->durasi .' '. $item->satuan_durasi.' x '.
+                                            $item->kegiatan .' '. $item->satuan_kegiatan.' x '.
+                                            $item->biaya_satuan
+                                            .' )' !!} </td>
+                                    <td> {{ $item->formatted_jumlah_biaya }} </td>
+                                    <td>
+                                        <select name="verifikasi_pimpinan_univ"
+                                                class="s my-2 bg-dark text-white
+                                                        text-white d-inline w-auto">
+                                            <option value="">Pilih Status</option>
+                                            <option value="Setuju"
+                                                @if($item->verifikasi_pimpinan_univ == "Setuju")
+                                                    selected
+                                                @endif>Setuju</option>
+                                            <option value="Tolak"
+                                                    @if($item->verifikasi_pimpinan_univ == "Tolak")
+                                                        selected
+                                                @endif>Tolak</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <button id="btn_triggerTanggapan" class="btn btn-primary mb-4 mt-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="me-2" width="20">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
+                                            </svg>
+                                            Tanggapan
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <span class="btn-save">
+                                            <i role="button"
+                                               class="bg-info px-2 mx-1 py-2 fa-solid fe fe-check-circle"></i></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    @include("VERIFIKASI.RAB_LANGGANAN.modalTanggapan")
+                    @include("VERIFIKASI.COMPONENTS.modalTor")
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+@push("scripts")
+    @include("VERIFIKASI.RAB_LANGGANAN.PIMPINAN_UNIV.script")
+@endpush
