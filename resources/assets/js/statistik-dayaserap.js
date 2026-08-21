@@ -14,39 +14,55 @@ document.addEventListener('DOMContentLoaded', function (e) {
       columns: [
         {
           data: 'unit_kerja',
+          width: '30%',
           render: function (data, type, row) {
             return data || '-';
           }
         },
         {
           data: 'sumberdana',
+          width: '15%',
           render: function (data, type, row) {
             return data || '-';
           }
         },
         {
           data: 'pagu_alokasi',
+          width: '15%',
+          className: 'text-end',
           render: function (data, type, row) {
             return type === 'display' ? new Intl.NumberFormat('id-ID').format(data) : data;
           }
         },
         {
           data: 'realisasi',
+          width: '15%',
+          className: 'text-end',
           render: function (data, type, row) {
             return type === 'display' ? new Intl.NumberFormat('id-ID').format(data) : data;
           }
         },
         {
           data: 'daya_serap',
+          width: '15%',
+          className: 'text-end',
           render: function (data, type, row) {
             return type === 'display' ? new Intl.NumberFormat('id-ID').format(data) : data;
           }
         },
         {
           data: 'persentase',
+          width: '10%',
+          className: 'text-end',
           render: function (data, type, row) {
             return type === 'display' ? data + '%' : data;
           }
+        }
+      ],
+      columnDefs: [
+        {
+          targets: '_all',
+          responsivePriority: 1
         }
       ],
       layout: {
