@@ -239,57 +239,57 @@
 @endsection
 @push('scripts')
     <script>
-        const $select = $(".ios-select-multiple")
-        // ubah href setiap kali event dropdown onchange ke trigger
-        $(document).on("click", ".btn-export-pdf", function(){
-            const idunit     = $(".unitkerjaOption.selected").map((_, el) => $(el).data("value") ).get().filter(v => v !== "X")
-            const sumberdana = $(".sumberdanaOption.selected").map((_, el) => $(el).data("value") ).get()
-            const idRekats   = $("#selectIdRekat").val() ? $("#selectIdRekat").val().join(",") : ""
-            let filter       = $("select.filter-data").val()
-            let backup       = $(".riwayatOption.selected").map((_, el) => $(el).data("value") ).get()
-
-            if ( sumberdana.length === 0 ) {
-                return tata.warn('Perhatian', 'Silahkan memilih sumber dana terlebih dahulu')
-            }
-            if ( idunit.length === 0 ){
-                return tata.warn('Perhatian', 'Silahkan memilih unit kerja terlebih dahulu')
-            }
-            // Open new tab and navigate to the URL
-            const rkaTab = window.open('', '_blank')
-            rkaTab.location.href = `/laporan/rktunit/pdf/${idunit}/${sumberdana}?filterdata=${filter}&backup=${backup}&idrekats=${idRekats}`
-        })
-        function ExportToExcel(type, fn, dl) {
-            const bodyTable = document.getElementsByClassName("body-tbl-unit")
-            const unitkerjaList = $select.find(".unitkerjaOption.selected").map((_, el) => $(el).data("text")).get()
-            const unitkerja = unitkerjaList.length === 1 ? unitkerjaList[0] : (unitkerjaList.length > 1 ? `${unitkerjaList.length} Unit` : 'Unitkerja')
-            const buttonDom = $("#btn_exportXlsx").html()
-
-            // Cek data
-            if ( $("select.unit_kerja").val() == "" )
-                return tata.warn("Perhatian", "Silahkan memilih unit kerja")
-            if ( $("select.sumberdana").val() == "" )
-                return tata.warn("Perhatian", "Silahkan memilih sumber dana")
-            if (bodyTable[0].rows.length === 0)
-                return tata.warn("Perhatian", "Tidak terdapat data")
-
-            $("#btn_exportXlsx").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengunduh file...`)
-            setTimeout(() => {
-                try {
-                const tabel = document.getElementById('tabel-rekat-unit')
-                const rows  = tabel.rows
-                const wb = XLSX.utils.table_to_book(tabel, { sheet: "sheet1" })
-                $("#btn_exportXlsx").html(buttonDom)
-                return dl ?
-                    XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
-                    XLSX.writeFile(wb, fn || (`RKA-${unitkerja}.` + (type || 'xlsx')))
-            } catch (e) {
-                $("#btn_exportXlsx").html(buttonDom)
-                return tata.error("Error", "Terjadi kesalahan saat export data")
-            }
-            }, 1000)
-        }
-
         $(document).ready(function() {
+            const $select = $(".ios-select-multiple")
+            // ubah href setiap kali event dropdown onchange ke trigger
+            $(document).on("click", ".btn-export-pdf", function(){
+                const idunit     = $(".unitkerjaOption.selected").map((_, el) => $(el).data("value") ).get().filter(v => v !== "X")
+                const sumberdana = $(".sumberdanaOption.selected").map((_, el) => $(el).data("value") ).get()
+                const idRekats   = $("#selectIdRekat").val() ? $("#selectIdRekat").val().join(",") : ""
+                let filter       = $("select.filter-data").val()
+                let backup       = $(".riwayatOption.selected").map((_, el) => $(el).data("value") ).get()
+
+                if ( sumberdana.length === 0 ) {
+                    return tata.warn('Perhatian', 'Silahkan memilih sumber dana terlebih dahulu')
+                }
+                if ( idunit.length === 0 ){
+                    return tata.warn('Perhatian', 'Silahkan memilih unit kerja terlebih dahulu')
+                }
+                // Open new tab and navigate to the URL
+                const rkaTab = window.open('', '_blank')
+                rkaTab.location.href = `/laporan/rktunit/pdf/${idunit}/${sumberdana}?filterdata=${filter}&backup=${backup}&idrekats=${idRekats}`
+            })
+            function ExportToExcel(type, fn, dl) {
+                const bodyTable = document.getElementsByClassName("body-tbl-unit")
+                const unitkerjaList = $select.find(".unitkerjaOption.selected").map((_, el) => $(el).data("text")).get()
+                const unitkerja = unitkerjaList.length === 1 ? unitkerjaList[0] : (unitkerjaList.length > 1 ? `${unitkerjaList.length} Unit` : 'Unitkerja')
+                const buttonDom = $("#btn_exportXlsx").html()
+
+                // Cek data
+                if ( $("select.unit_kerja").val() == "" )
+                    return tata.warn("Perhatian", "Silahkan memilih unit kerja")
+                if ( $("select.sumberdana").val() == "" )
+                    return tata.warn("Perhatian", "Silahkan memilih sumber dana")
+                if (bodyTable[0].rows.length === 0)
+                    return tata.warn("Perhatian", "Tidak terdapat data")
+
+                $("#btn_exportXlsx").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengunduh file...`)
+                setTimeout(() => {
+                    try {
+                    const tabel = document.getElementById('tabel-rekat-unit')
+                    const rows  = tabel.rows
+                    const wb = XLSX.utils.table_to_book(tabel, { sheet: "sheet1" })
+                    $("#btn_exportXlsx").html(buttonDom)
+                    return dl ?
+                        XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+                        XLSX.writeFile(wb, fn || (`RKA-${unitkerja}.` + (type || 'xlsx')))
+                } catch (e) {
+                    $("#btn_exportXlsx").html(buttonDom)
+                    return tata.error("Error", "Terjadi kesalahan saat export data")
+                }
+                }, 1000)
+            }
+
             const STORAGE_KEY   = 'torNoticeHidden'
             const SHOW_INTERVAL = 60 * 60 * 1000 // 1 hour in milliseconds
 
