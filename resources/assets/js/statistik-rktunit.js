@@ -8,13 +8,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
   const dt_rktunit_table = document.querySelector('.dt-rktunit');
   if (dt_rktunit_table) {
     let dt_rktunit = new DataTable(dt_rktunit_table, {
-      ajax: {
-        url: '/statistik/rktunit/datatable',
-        data: function (d) {
-          d.filter = $('#filter-status').val();
-        },
-        dataSrc: 'data'
-      },
+      data: window.dataRktUnit || [],
       columns: [
         {
           data: 'unit_kerja',
@@ -144,9 +138,19 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
     $('#table-title').text(titleMap[filterValue] || 'Rincian RKT Unit');
 
-    // Reload DataTables dengan filter baru
+    // Filter data lokal berdasarkan filter
     if (dt_rktunit) {
-      dt_rktunit.ajax.reload();
+      let filteredData = window.dataRktUnit || [];
+
+      if (filterValue === 'realisasi') {
+        filteredData = filteredData.filter(item => item.realisasi > 0);
+      } else if (filterValue === '!realisasi') {
+        filteredData = filteredData.filter(item => item.realisasi === 0 && item.is_draft !== 'true');
+      } else if (filterValue === 'draft') {
+        filteredData = filteredData.filter(item => item.is_draft === 'true');
+      }
+
+      dt_rktunit.clear().rows.add(filteredData).draw();
     }
   });
 
