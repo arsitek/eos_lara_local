@@ -193,6 +193,8 @@ class StatistikController extends Controller
             sd.kd_sumberdana,
             sd.sumberdana,
             backupRkatDet.jenis AS rab_type,
+            backupRkatDet.id_mak,
+            backupRkatDet.kegiatan,
             backupRkatDet.jumlah_biaya,
             COALESCE(backupRkatDet.jumlah_amprahan, 0) + COALESCE(backupRkatDet.jumlah_realisasi, 0) AS realisasi,
             ( CASE WHEN (backupRkatDet.jumlah_amprahan IS NOT NULL OR backupRkatDet.jumlah_realisasi IS NOT NULL)
@@ -373,8 +375,25 @@ class StatistikController extends Controller
         // Convert associative array to indexed array for DataTable
         $dataPerUnitArray = array_values($dataPerUnit);
 
+        // Convert detail data to array for DataTables
+        $dataRktDetailArray = [];
+        foreach ($dataRktBackup as $item) {
+            $dataRktDetailArray[] = [
+                'unit_kerja' => $item->unit_kerja,
+                'sumberdana' => $item->sumberdana,
+                'rab_type' => $item->rab_type,
+                'kode_keg' => $item->id_mak ?? '-', // Using id_mak as kode_kegiatan
+                'rincian_kegiatan' => $item->kegiatan ?? '-',
+                'jumlah_biaya' => $item->jumlah_biaya,
+                'realisasi' => $item->realisasi,
+                'sisa' => $item->jumlah_biaya - $item->realisasi,
+                'persentase' => $item->jumlah_biaya > 0 ? round(($item->realisasi / $item->jumlah_biaya) * 100, 2) : 0,
+                'is_draft' => $item->is_draft
+            ];
+        }
+
         return view('statistik.rktunit', compact(
-            'dataPerUnitArray',
+            'dataRktDetailArray',
             'backupKeterangan',
             'backupTahun',
             'totalSemua',
