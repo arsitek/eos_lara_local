@@ -20,7 +20,7 @@
 @section('content')
   <!-- Pass data to JavaScript -->
   <script>
-    window.dataRktUnit = @json($dataPerUnitArray);
+    window.dataRktUnit = @json($dataRktDetailArray);
   </script>
 
   <!-- Total Semua Unit -->
