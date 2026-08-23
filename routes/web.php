@@ -428,3 +428,5 @@ Route::get('/laporan/dataerror/get', [DataErrorController::class, 'getDataPPKNul
 use App\Http\Controllers\StatistikController;
 
 Route::get('/statistik/dayaserap', [StatistikController::class, 'dayaSerap'])->name('statistik.dayaserap');
+Route::get('/statistik/rktunit', [StatistikController::class, 'rktUnit'])->name('statistik.rktunit');
+Route::get('/statistik/rktunit/datatable', [StatistikController::class, 'getRktUnitDataTable'])->name('statistik.rktunit.datatable');

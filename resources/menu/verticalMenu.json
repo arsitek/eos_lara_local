@@ -186,6 +186,11 @@
           "url": "statistik/dayaserap",
           "name": "Daya Serap",
           "slug": "statistik-dayaserap"
+        },
+        {
+          "url": "statistik/rktunit",
+          "name": "RKT Unit",
+          "slug": "statistik-rktunit"
         }
       ]
     },
