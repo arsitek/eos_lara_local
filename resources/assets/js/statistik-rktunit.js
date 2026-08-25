@@ -179,6 +179,21 @@ document.addEventListener('DOMContentLoaded', function (e) {
   }, 100);
 });
 
+// Financial formatter for executive-friendly display
+function formatFinancial(value) {
+  if (value >= 1000000000000) {
+    return 'Rp' + (value / 1000000000000).toFixed(1).replace('.', ',') + ' T';
+  } else if (value >= 1000000000) {
+    return 'Rp' + (value / 1000000000).toFixed(1).replace('.', ',') + ' M';
+  } else if (value >= 1000000) {
+    return 'Rp' + (value / 1000000).toFixed(1).replace('.', ',') + ' Jt';
+  } else if (value >= 1000) {
+    return 'Rp' + (value / 1000).toFixed(1).replace('.', ',') + ' Rb';
+  } else {
+    return 'Rp' + value.toLocaleString('id-ID');
+  }
+}
+
 // Financial Distribution Chart
 if (document.querySelector('#financialDistributionChart')) {
   var financialOptions = {
@@ -215,7 +230,7 @@ if (document.querySelector('#financialDistributionChart')) {
       title: { text: 'Value' },
       labels: {
         formatter: function (val) {
-          return val.toLocaleString('id-ID');
+          return formatFinancial(val);
         }
       }
     },
@@ -228,7 +243,7 @@ if (document.querySelector('#financialDistributionChart')) {
     tooltip: {
       y: {
         formatter: function (val) {
-          return val.toLocaleString('id-ID');
+          return formatFinancial(val);
         }
       }
     }
@@ -271,7 +286,12 @@ if (document.querySelector('#itemCountDistributionChart')) {
     colors: ['#28c76f', '#ea5455', '#ff9f43'],
     xaxis: {
       categories: ['Item Count Distribution'],
-      title: { text: 'Count' }
+      title: { text: 'Count' },
+      labels: {
+        formatter: function (val) {
+          return val.toLocaleString('id-ID');
+        }
+      }
     },
     yaxis: {
       title: { text: '' }

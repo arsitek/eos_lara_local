@@ -29,7 +29,6 @@
       <div class="row mb-4">
         <div class="col-12">
           <h5 class="mb-2">REALIZATION RATE</h5>
-          <p class="text-body mb-0">Total Realization / Total Allocation × 100</p>
         </div>
       </div>
 
