@@ -261,9 +261,11 @@ class StatistikController extends Controller
             $totalSemua['count']++;
         }
 
-        // Hitung rata-rata persentase untuk semua unit
-        if ($totalSemua['count'] > 0) {
-            $totalSemua['avg_persentase'] = round($totalSemua['avg_persentase'] / $totalSemua['count'], 2);
+        // Hitung Realization Rate (weighted average): total_realisasi / total_jumlah_biaya × 100
+        if ($totalSemua['total_jumlah_biaya'] > 0) {
+            $totalSemua['avg_persentase'] = round(($totalSemua['total_realisasi'] / $totalSemua['total_jumlah_biaya']) * 100, 2);
+        } else {
+            $totalSemua['avg_persentase'] = 0;
         }
 
         // Hitung statistik berdasarkan status realisasi

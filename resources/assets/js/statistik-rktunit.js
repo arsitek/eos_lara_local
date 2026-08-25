@@ -178,3 +178,116 @@ document.addEventListener('DOMContentLoaded', function (e) {
     });
   }, 100);
 });
+
+// Financial Distribution Chart
+if (document.querySelector('#financialDistributionChart')) {
+  var financialOptions = {
+    series: [
+      {
+        name: 'Sudah',
+        data: [window.statusDistributionData.financial.sudah]
+      },
+      {
+        name: 'Belum',
+        data: [window.statusDistributionData.financial.belum]
+      },
+      {
+        name: 'Draft',
+        data: [window.statusDistributionData.financial.draft]
+      }
+    ],
+    chart: {
+      type: 'bar',
+      stacked: true,
+      height: 150,
+      toolbar: { show: false }
+    },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+        borderRadius: 4,
+        barHeight: '80%'
+      }
+    },
+    colors: ['#28c76f', '#ea5455', '#ff9f43'],
+    xaxis: {
+      categories: ['Financial Distribution'],
+      title: { text: 'Value' },
+      labels: {
+        formatter: function (val) {
+          return val.toLocaleString('id-ID');
+        }
+      }
+    },
+    yaxis: {
+      title: { text: '' }
+    },
+    legend: {
+      show: false
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return val.toLocaleString('id-ID');
+        }
+      }
+    }
+  };
+
+  var financialChart = new ApexCharts(document.querySelector('#financialDistributionChart'), financialOptions);
+  financialChart.render();
+}
+
+// Item Count Distribution Chart
+if (document.querySelector('#itemCountDistributionChart')) {
+  var itemCountOptions = {
+    series: [
+      {
+        name: 'Sudah',
+        data: [window.statusDistributionData.item.sudah]
+      },
+      {
+        name: 'Belum',
+        data: [window.statusDistributionData.item.belum]
+      },
+      {
+        name: 'Draft',
+        data: [window.statusDistributionData.item.draft]
+      }
+    ],
+    chart: {
+      type: 'bar',
+      stacked: true,
+      height: 150,
+      toolbar: { show: false }
+    },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+        borderRadius: 4,
+        barHeight: '80%'
+      }
+    },
+    colors: ['#28c76f', '#ea5455', '#ff9f43'],
+    xaxis: {
+      categories: ['Item Count Distribution'],
+      title: { text: 'Count' }
+    },
+    yaxis: {
+      title: { text: '' }
+    },
+    legend: {
+      position: 'bottom'
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return val.toLocaleString('id-ID');
+        }
+      }
+    }
+  };
+
+  var itemCountChart = new ApexCharts(document.querySelector('#itemCountDistributionChart'), itemCountOptions);
+  itemCountChart.render();
+}

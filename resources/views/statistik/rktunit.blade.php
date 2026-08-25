@@ -4,12 +4,12 @@
 
 <!-- Vendor Styles -->
 @section('vendor-style')
-  @vite(['resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss', 'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss'])
+  @vite(['resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss', 'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss', 'resources/assets/vendor/libs/apex-charts/apex-charts.scss'])
 @endsection
 
 <!-- Vendor Scripts -->
 @section('vendor-script')
-  @vite(['resources/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js', 'resources/assets/vendor/libs/notiflix/notiflix.js'])
+  @vite(['resources/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js', 'resources/assets/vendor/libs/notiflix/notiflix.js', 'resources/assets/vendor/libs/apex-charts/apexcharts.js'])
 @endsection
 
 <!-- Page Scripts -->
@@ -23,16 +23,37 @@
     window.dataRktUnit = @json($dataRktDetailArray);
   </script>
 
-  <!-- Total Semua Unit -->
-  <div class="card bg-transparent shadow-none my-6 border-0">
-    <div class="card-body row p-0 pb-6 g-6">
-      <div class="col-12">
-        <h5 class="mb-2">TOTAL RKT PER {{ $backupKeterangan ?? 'Data Terbaru' }}</h5>
-        <div class="col-12 col-lg-8">
-          <p>Ringkasan total jumlah biaya, realisasi, sisa, dan rata-rata persentase untuk seluruh unit.</p>
+  <!-- Hero Performance -->
+  <div class="card mb-6">
+    <div class="card-body">
+      <div class="row mb-4">
+        <div class="col-12">
+          <h5 class="mb-2">REALIZATION RATE</h5>
+          <p class="text-body mb-0">Total Realization / Total Allocation × 100</p>
         </div>
-        <div class="d-flex justify-content-between flex-wrap gap-4 me-12">
-          <div class="d-flex align-items-center gap-4 me-6 me-sm-0">
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="d-flex justify-content-between mb-1">
+            <span class="fw-medium">Realization Rate</span>
+            <span class="fw-bold">{{ number_format($totalSemua['avg_persentase'] ?? 0, 2, ',', '.') }}%</span>
+          </div>
+          <div class="progress" style="height: 50px;">
+            <div class="progress-bar bg-primary" role="progressbar"
+              style="width: {{ min(100, max(0, $totalSemua['avg_persentase'] ?? 0)) }}%"
+              aria-valuenow="{{ min(100, max(0, $totalSemua['avg_persentase'] ?? 0)) }}" aria-valuemin="0"
+              aria-valuemax="100">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Supporting Metrics -->
+      <div class="row g-6">
+        <div class="col-md-4">
+          <div class="d-flex align-items-center gap-4">
             <div class="avatar avatar-lg">
               <div class="avatar-initial bg-label-primary rounded">
                 <div class="text-primary">
@@ -50,10 +71,12 @@
               </div>
             </div>
             <div class="content-right">
-              <p class="mb-0 fw-medium">TOTAL JUMLAH BIAYA</p>
+              <p class="mb-0 fw-medium text-body">Total Allocation</p>
               <h4 class="text-primary mb-0">{{ number_format($totalSemua['total_jumlah_biaya'] ?? 0, 0, ',', '.') }}</h4>
             </div>
           </div>
+        </div>
+        <div class="col-md-4">
           <div class="d-flex align-items-center gap-4">
             <div class="avatar avatar-lg">
               <div class="avatar-initial bg-label-success rounded">
@@ -71,10 +94,12 @@
               </div>
             </div>
             <div class="content-right">
-              <p class="mb-0 fw-medium">TOTAL REALISASI</p>
+              <p class="mb-0 fw-medium text-body">Total Realization</p>
               <h4 class="text-success mb-0">{{ number_format($totalSemua['total_realisasi'] ?? 0, 0, ',', '.') }}</h4>
             </div>
           </div>
+        </div>
+        <div class="col-md-4">
           <div class="d-flex align-items-center gap-4">
             <div class="avatar avatar-lg">
               <div class="avatar-initial bg-label-info rounded">
@@ -91,33 +116,8 @@
               </div>
             </div>
             <div class="content-right">
-              <p class="mb-0 fw-medium">TOTAL SISA</p>
+              <p class="mb-0 fw-medium text-body">Remaining Allocation</p>
               <h4 class="text-info mb-0">{{ number_format($totalSemua['total_sisa'] ?? 0, 0, ',', '.') }}</h4>
-            </div>
-          </div>
-          <div class="d-flex align-items-center gap-4">
-            <div class="avatar avatar-lg">
-              <div class="avatar-initial bg-label-warning rounded">
-                <div class="text-warning">
-                  <svg width="38" height="38" viewBox="0 0 38 38" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <g id="Percent">
-                      <path id="Vector" opacity="0.2" d="M11.875 26.125L26.125 11.875" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                      <path id="Vector_2"
-                        d="M11.875 11.875C13.6264 11.875 15.0469 13.2955 15.0469 15.0469C15.0469 16.7983 13.6264 18.2188 11.875 18.2188C10.1236 18.2188 8.70312 16.7983 8.70312 15.0469C8.70312 13.2955 10.1236 11.875 11.875 11.875Z"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                      <path id="Vector_3"
-                        d="M26.125 19.7812C27.8764 19.7812 29.2969 21.2017 29.2969 22.9531C29.2969 24.7045 27.8764 26.125 26.125 26.125C24.3736 26.125 22.9531 24.7045 22.9531 22.9531C22.9531 21.2017 24.3736 19.7812 26.125 19.7812Z"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </g>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div class="content-right">
-              <p class="mb-0 fw-medium">RATA-RATA PERSENTASE</p>
-              <h4 class="text-warning mb-0">{{ number_format($totalSemua['avg_persentase'] ?? 0, 2, ',', '.') }}%</h4>
             </div>
           </div>
         </div>
@@ -125,74 +125,31 @@
     </div>
   </div>
 
-  <!-- Statistik Berdasarkan Status Realisasi -->
+  <!-- Status Distribution -->
   <div class="card mb-6">
     <div class="card-header">
-      <h5 class="card-title mb-0">Statistik Berdasarkan Status Realisasi</h5>
+      <h5 class="card-title mb-0">Status Distribution</h5>
     </div>
     <div class="card-body">
-      <div class="row g-6">
-        <!-- Sudah Realisasi -->
-        <div class="col-md-4">
-          <div class="card bg-label-success h-100">
-            <div class="card-body">
-              <h6 class="text-success mb-2">Sudah Realisasi</h6>
-              <h4 class="text-success mb-1">
-                {{ number_format($statusStatistik['sudah']['total_jumlah_biaya'] ?? 0, 0, ',', '.') }}</h4>
-              <p class="mb-0">Total Biaya</p>
-              <h4 class="text-success mb-1">
-                {{ number_format($statusStatistik['sudah']['total_realisasi'] ?? 0, 0, ',', '.') }}</h4>
-              <p class="mb-0">Total Realisasi</p>
-              <h4 class="text-success mb-1">
-                {{ number_format($statusStatistik['sudah']['total_sisa'] ?? 0, 0, ',', '.') }}</h4>
-              <p class="mb-0">Total Sisa</p>
-              <h4 class="text-success mb-1">
-                {{ number_format($statusStatistik['sudah']['persentase'] ?? 0, 2, ',', '.') }}%</h4>
-              <p class="mb-0">Persentase</p>
-              <h4 class="text-success mb-0">{{ $statusStatistik['sudah']['count'] ?? 0 }}</h4>
-              <p class="mb-0">Jumlah Item</p>
-            </div>
-          </div>
-        </div>
-        <!-- Belum Realisasi -->
-        <div class="col-md-4">
-          <div class="card bg-label-danger h-100">
-            <div class="card-body">
-              <h6 class="text-danger mb-2">Belum Realisasi</h6>
-              <h4 class="text-danger mb-1">
-                {{ number_format($statusStatistik['belum']['total_jumlah_biaya'] ?? 0, 0, ',', '.') }}</h4>
-              <p class="mb-0">Total Biaya</p>
-              <h4 class="text-danger mb-1">
-                {{ number_format($statusStatistik['belum']['total_sisa'] ?? 0, 0, ',', '.') }}</h4>
-              <p class="mb-0">Total Sisa</p>
-              <h4 class="text-danger mb-1">0%</h4>
-              <p class="mb-0">Persentase</p>
-              <h4 class="text-danger mb-0">{{ $statusStatistik['belum']['count'] ?? 0 }}</h4>
-              <p class="mb-0">Jumlah Item</p>
-            </div>
-          </div>
-        </div>
-        <!-- Draft -->
-        <div class="col-md-4">
-          <div class="card bg-label-warning h-100">
-            <div class="card-body">
-              <h6 class="text-warning mb-2">Draft</h6>
-              <h4 class="text-warning mb-1">
-                {{ number_format($statusStatistik['draft']['total_jumlah_biaya'] ?? 0, 0, ',', '.') }}</h4>
-              <p class="mb-0">Total Biaya</p>
-              <h4 class="text-warning mb-1">
-                {{ number_format($statusStatistik['draft']['total_sisa'] ?? 0, 0, ',', '.') }}</h4>
-              <p class="mb-0">Total Sisa</p>
-              <h4 class="text-warning mb-1">0%</h4>
-              <p class="mb-0">Persentase</p>
-              <h4 class="text-warning mb-0">{{ $statusStatistik['draft']['count'] ?? 0 }}</h4>
-              <p class="mb-0">Jumlah Item</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div id="financialDistributionChart"></div>
+      <div class="mt-4" id="itemCountDistributionChart"></div>
     </div>
   </div>
+
+  <script>
+    window.statusDistributionData = {
+      financial: {
+        sudah: {{ $statusStatistik['sudah']['total_jumlah_biaya'] ?? 0 }},
+        belum: {{ $statusStatistik['belum']['total_jumlah_biaya'] ?? 0 }},
+        draft: {{ $statusStatistik['draft']['total_jumlah_biaya'] ?? 0 }}
+      },
+      item: {
+        sudah: {{ $statusStatistik['sudah']['count'] ?? 0 }},
+        belum: {{ $statusStatistik['belum']['count'] ?? 0 }},
+        draft: {{ $statusStatistik['draft']['count'] ?? 0 }}
+      }
+    };
+  </script>
 
   <!-- 5 Unit dengan Total Biaya Tertinggi -->
   <div class="card card-action mb-4">
