@@ -112,78 +112,113 @@
     </div>
   </div>
 
-  <!-- Status Distribution -->
-  <div class="card mb-6">
-    <div class="card-header">
-      <h5 class="card-title mb-0">Status Distribution</h5>
-    </div>
-    <div class="card-body">
-      <div id="financialDistributionChart"></div>
-      <div class="mt-4" id="itemCountDistributionChart"></div>
-    </div>
-  </div>
-
   <script>
     window.statusDistributionData = {
-      financial: {
-        sudah: {{ $statusStatistik['sudah']['total_jumlah_biaya'] ?? 0 }},
-        belum: {{ $statusStatistik['belum']['total_jumlah_biaya'] ?? 0 }},
-        draft: {{ $statusStatistik['draft']['total_jumlah_biaya'] ?? 0 }}
+      sudah: {
+        total: {{ $statusStatistik['sudah']['total_jumlah_biaya'] ?? 0 }},
+        count: {{ $statusStatistik['sudah']['count'] ?? 0 }}
       },
-      item: {
-        sudah: {{ $statusStatistik['sudah']['count'] ?? 0 }},
-        belum: {{ $statusStatistik['belum']['count'] ?? 0 }},
-        draft: {{ $statusStatistik['draft']['count'] ?? 0 }}
-      }
+      belum: {
+        total: {{ $statusStatistik['belum']['total_jumlah_biaya'] ?? 0 }},
+        count: {{ $statusStatistik['belum']['count'] ?? 0 }}
+      },
+      draft: {
+        total: {{ $statusStatistik['draft']['total_jumlah_biaya'] ?? 0 }},
+        count: {{ $statusStatistik['draft']['count'] ?? 0 }}
+      },
+      totalSemua: {{ $totalSemua['total_jumlah_biaya'] ?? 0 }},
+      totalItemCount: {{ $statusStatistik['sudah']['count'] + $statusStatistik['belum']['count'] + $statusStatistik['draft']['count'] }}
     };
   </script>
 
-  <!-- 5 Unit dengan Total Biaya Tertinggi -->
-  <div class="card card-action mb-4">
+  <!-- Status Distribution -->
+  <div class="card mb-6">
     <div class="card-header">
-      <h5 class="card-action-title mb-0">5 Unit dengan Total Biaya Tertinggi</h5>
-      <div class="card-action-element">
-        <ul class="list-inline mb-0">
-          <li class="list-inline-item">
-            <a href="javascript:void(0);" class="card-collapsible"><i
-                class="icon-base ti tabler-chevron-up icon-sm"></i></a>
-          </li>
-          <li class="list-inline-item">
-            <a href="javascript:void(0);" class="card-expand"><i
-                class="icon-base ti tabler-arrows-maximize icon-sm"></i></a>
-          </li>
-        </ul>
-      </div>
+      <h5 class="card-title mb-0">DISTRIBUSI ANGGARAN</h5>
     </div>
-    <div class="collapse show">
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped mb-0">
-            <thead>
-              <tr>
-                <th>UNIT KERJA</th>
-                <th class="text-end">TOTAL BIAYA</th>
-                <th class="text-end">TOTAL REALISASI</th>
-                <th class="text-end">TOTAL SISA</th>
-                <th class="text-end">PERSENTASE</th>
-              </tr>
-            </thead>
-            <tbody>
-              @forelse($unitTertinggi5 ?? [] as $unit)
-                <tr>
-                  <td>{{ $unit['unit_kerja'] }}</td>
-                  <td class="text-end">{{ number_format($unit['total_jumlah_biaya'], 0, ',', '.') }}</td>
-                  <td class="text-end">{{ number_format($unit['total_realisasi'], 0, ',', '.') }}</td>
-                  <td class="text-end">{{ number_format($unit['total_sisa'], 0, ',', '.') }}</td>
-                  <td class="text-end">{{ number_format($unit['avg_persentase'], 2, ',', '.') }}%</td>
-                </tr>
-              @empty
-                <tr>
-                  <td colspan="5" class="text-center">Tidak ada data untuk ditampilkan</td>
-                </tr>
-              @endforelse
-            </tbody>
-          </table>
+    <div class="card-body">
+      <!-- 3 Kartu Horizontal dengan Progress Bar -->
+      <div class="row g-4 mb-6">
+        <!-- Sudah -->
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <p class="mb-2 text-muted" style="font-size: 13px;">Sudah Realisasi</p>
+              <h4 class="text-info mb-1" id="sudahTotal">Rp0</h4>
+              <p class="mb-2 text-muted" style="font-size: 12px;" id="sudahCount">0 item</p>
+              <div class="progress" style="height: 4px;">
+                <div class="progress-bar bg-info" id="sudahProgress" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Belum -->
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <p class="mb-2 text-muted" style="font-size: 13px;">Belum Realisasi</p>
+              <h4 class="text-danger mb-1" id="belumTotal">Rp0</h4>
+              <p class="mb-2 text-muted" style="font-size: 12px;" id="belumCount">0 item</p>
+              <div class="progress" style="height: 4px;">
+                <div class="progress-bar bg-danger" id="belumProgress" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Draft -->
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <p class="mb-2 text-muted" style="font-size: 13px;">Draft</p>
+              <h4 class="text-warning mb-1" id="draftTotal">Rp0</h4>
+              <p class="mb-2 text-muted" style="font-size: 12px;" id="draftCount">0 item</p>
+              <div class="progress" style="height: 4px;">
+                <div class="progress-bar bg-warning" id="draftProgress" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 Donut Charts -->
+      <div class="row g-6">
+        <!-- Financial Distribution Donut -->
+        <div class="col-md-6">
+          <div class="d-flex flex-wrap gap-3 mb-2 justify-content-center" style="font-size: 12px; color: #6c757d;">
+            <span style="display: flex; align-items: center; gap: 4px;">
+              <span style="width: 10px; height: 10px; border-radius: 2px; background: #00bad1;"></span>
+              Sudah <span id="sudahFinPersentase">0%</span>
+            </span>
+            <span style="display: flex; align-items: center; gap: 4px;">
+              <span style="width: 10px; height: 10px; border-radius: 2px; background: #ea5455;"></span>
+              Belum <span id="belumFinPersentase">0%</span>
+            </span>
+            <span style="display: flex; align-items: center; gap: 4px;">
+              <span style="width: 10px; height: 10px; border-radius: 2px; background: #ff9f43;"></span>
+              Draft <span id="draftFinPersentase">0%</span>
+            </span>
+          </div>
+          <div id="financialDonutChart" style="height: 220px;"></div>
+          <p class="text-center mb-0 mt-2 text-muted" style="font-size: 12px;">Financial distribution</p>
+        </div>
+        <!-- Item Count Distribution Donut -->
+        <div class="col-md-6">
+          <div class="d-flex flex-wrap gap-3 mb-2 justify-content-center" style="font-size: 12px; color: #6c757d;">
+            <span style="display: flex; align-items: center; gap: 4px;">
+              <span style="width: 10px; height: 10px; border-radius: 2px; background: #00bad1;"></span>
+              Sudah <span id="sudahCountPersentase">0%</span>
+            </span>
+            <span style="display: flex; align-items: center; gap: 4px;">
+              <span style="width: 10px; height: 10px; border-radius: 2px; background: #ea5455;"></span>
+              Belum <span id="belumCountPersentase">0%</span>
+            </span>
+            <span style="display: flex; align-items: center; gap: 4px;">
+              <span style="width: 10px; height: 10px; border-radius: 2px; background: #ff9f43;"></span>
+              Draft <span id="draftCountPersentase">0%</span>
+            </span>
+          </div>
+          <div id="itemCountDonutChart" style="height: 220px;"></div>
+          <p class="text-center mb-0 mt-2 text-muted" style="font-size: 12px;">Item count distribution</p>
         </div>
       </div>
     </div>

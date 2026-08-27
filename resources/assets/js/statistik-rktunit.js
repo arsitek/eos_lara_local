@@ -194,48 +194,81 @@ function formatFinancial(value) {
   }
 }
 
-// Financial Distribution Chart
-if (document.querySelector('#financialDistributionChart')) {
-  var financialOptions = {
-    series: [
-      {
-        name: 'Sudah',
-        data: [window.statusDistributionData.financial.sudah]
-      },
-      {
-        name: 'Belum',
-        data: [window.statusDistributionData.financial.belum]
-      },
-      {
-        name: 'Draft',
-        data: [window.statusDistributionData.financial.draft]
-      }
-    ],
+// Status Distribution - Progress Bars and Donut Charts
+if (document.querySelector('#sudahTotal')) {
+  // Calculate percentages
+  const sudahFinPersentase =
+    window.statusDistributionData.totalSemua > 0
+      ? (window.statusDistributionData.sudah.total / window.statusDistributionData.totalSemua) * 100
+      : 0;
+  const belumFinPersentase =
+    window.statusDistributionData.totalSemua > 0
+      ? (window.statusDistributionData.belum.total / window.statusDistributionData.totalSemua) * 100
+      : 0;
+  const draftFinPersentase =
+    window.statusDistributionData.totalSemua > 0
+      ? (window.statusDistributionData.draft.total / window.statusDistributionData.totalSemua) * 100
+      : 0;
+
+  const sudahCountPersentase =
+    window.statusDistributionData.totalItemCount > 0
+      ? (window.statusDistributionData.sudah.count / window.statusDistributionData.totalItemCount) * 100
+      : 0;
+  const belumCountPersentase =
+    window.statusDistributionData.totalItemCount > 0
+      ? (window.statusDistributionData.belum.count / window.statusDistributionData.totalItemCount) * 100
+      : 0;
+  const draftCountPersentase =
+    window.statusDistributionData.totalItemCount > 0
+      ? (window.statusDistributionData.draft.count / window.statusDistributionData.totalItemCount) * 100
+      : 0;
+
+  // Update progress bars
+  document.getElementById('sudahProgress').style.width = sudahFinPersentase + '%';
+  document.getElementById('belumProgress').style.width = belumFinPersentase + '%';
+  document.getElementById('draftProgress').style.width = draftFinPersentase + '%';
+
+  // Update card values
+  document.getElementById('sudahTotal').textContent = formatFinancial(window.statusDistributionData.sudah.total);
+  document.getElementById('sudahCount').textContent =
+    window.statusDistributionData.sudah.count.toLocaleString('id-ID') + ' item';
+
+  document.getElementById('belumTotal').textContent = formatFinancial(window.statusDistributionData.belum.total);
+  document.getElementById('belumCount').textContent =
+    window.statusDistributionData.belum.count.toLocaleString('id-ID') + ' item';
+
+  document.getElementById('draftTotal').textContent = formatFinancial(window.statusDistributionData.draft.total);
+  document.getElementById('draftCount').textContent =
+    window.statusDistributionData.draft.count.toLocaleString('id-ID') + ' item';
+
+  // Update legend percentages
+  document.getElementById('sudahFinPersentase').textContent = sudahFinPersentase.toFixed(0) + '%';
+  document.getElementById('belumFinPersentase').textContent = belumFinPersentase.toFixed(0) + '%';
+  document.getElementById('draftFinPersentase').textContent = draftFinPersentase.toFixed(0) + '%';
+
+  document.getElementById('sudahCountPersentase').textContent = sudahCountPersentase.toFixed(0) + '%';
+  document.getElementById('belumCountPersentase').textContent = belumCountPersentase.toFixed(0) + '%';
+  document.getElementById('draftCountPersentase').textContent = draftCountPersentase.toFixed(0) + '%';
+
+  // Financial Distribution Donut Chart
+  const financialDonutOptions = {
+    series: [sudahFinPersentase, belumFinPersentase, draftFinPersentase],
+    labels: ['Sudah Realisasi', 'Belum Realisasi', 'Draft'],
     chart: {
-      type: 'bar',
-      stacked: true,
-      height: 150,
-      toolbar: { show: false }
+      type: 'donut',
+      height: 220,
+      fontFamily: 'Public Sans, sans-serif'
     },
+    colors: ['#00bad1', '#ea5455', '#ff9f43'],
     plotOptions: {
-      bar: {
-        horizontal: true,
-        borderRadius: 4,
-        barHeight: '80%'
-      }
-    },
-    colors: ['#28c76f', '#ea5455', '#ff9f43'],
-    xaxis: {
-      categories: ['Financial Distribution'],
-      title: { text: 'Value' },
-      labels: {
-        formatter: function (val) {
-          return formatFinancial(val);
+      pie: {
+        donut: {
+          size: '65%'
         }
       }
     },
-    yaxis: {
-      title: { text: '' }
+    dataLabels: {
+      enabled: false
     },
     legend: {
       show: false
@@ -243,73 +276,81 @@ if (document.querySelector('#financialDistributionChart')) {
     tooltip: {
       y: {
         formatter: function (val) {
-          return formatFinancial(val);
+          return val.toFixed(1) + '%';
         }
       }
     }
   };
 
-  var financialChart = new ApexCharts(document.querySelector('#financialDistributionChart'), financialOptions);
-  financialChart.render();
-}
+  const financialDonutChart = new ApexCharts(document.querySelector('#financialDonutChart'), financialDonutOptions);
+  financialDonutChart.render();
 
-// Item Count Distribution Chart
-if (document.querySelector('#itemCountDistributionChart')) {
-  var itemCountOptions = {
-    series: [
-      {
-        name: 'Sudah',
-        data: [window.statusDistributionData.item.sudah]
-      },
-      {
-        name: 'Belum',
-        data: [window.statusDistributionData.item.belum]
-      },
-      {
-        name: 'Draft',
-        data: [window.statusDistributionData.item.draft]
-      }
-    ],
+  // Item Count Distribution Donut Chart
+  const itemCountDonutOptions = {
+    series: [sudahCountPersentase, belumCountPersentase, draftCountPersentase],
+    labels: ['Sudah Realisasi', 'Belum Realisasi', 'Draft'],
     chart: {
-      type: 'bar',
-      stacked: true,
-      height: 150,
-      toolbar: { show: false }
+      type: 'donut',
+      height: 220,
+      fontFamily: 'Public Sans, sans-serif'
     },
+    colors: ['#00bad1', '#ea5455', '#ff9f43'],
     plotOptions: {
-      bar: {
-        horizontal: true,
-        borderRadius: 4,
-        barHeight: '80%'
-      }
-    },
-    colors: ['#28c76f', '#ea5455', '#ff9f43'],
-    xaxis: {
-      categories: ['Item Count Distribution'],
-      title: { text: 'Count' },
-      labels: {
-        formatter: function (val) {
-          return val.toLocaleString('id-ID');
+      pie: {
+        donut: {
+          size: '65%'
         }
       }
     },
-    yaxis: {
-      title: { text: '' }
+    dataLabels: {
+      enabled: false
     },
     legend: {
-      position: 'bottom'
+      show: false
     },
     tooltip: {
       y: {
         formatter: function (val) {
-          return val.toLocaleString('id-ID');
+          return val.toFixed(1) + '%';
         }
       }
     }
   };
 
-  var itemCountChart = new ApexCharts(document.querySelector('#itemCountDistributionChart'), itemCountOptions);
-  itemCountChart.render();
+  const itemCountDonutChart = new ApexCharts(document.querySelector('#itemCountDonutChart'), itemCountDonutOptions);
+  itemCountDonutChart.render();
+}
+
+// Initialize all status radial charts
+if (document.querySelector('#sudahRadialChart')) {
+  // Calculate percentage for each status
+  const sudahPersentase =
+    window.statusDistributionData.totalSemua > 0
+      ? (window.statusDistributionData.sudah.total / window.statusDistributionData.totalSemua) * 100
+      : 0;
+  const belumPersentase =
+    window.statusDistributionData.totalSemua > 0
+      ? (window.statusDistributionData.belum.total / window.statusDistributionData.totalSemua) * 100
+      : 0;
+  const draftPersentase =
+    window.statusDistributionData.totalSemua > 0
+      ? (window.statusDistributionData.draft.total / window.statusDistributionData.totalSemua) * 100
+      : 0;
+
+  // Initialize charts
+  initStatusRadialChart('sudahRadialChart', sudahPersentase, '#28c76f');
+  initStatusRadialChart('belumRadialChart', belumPersentase, '#ea5455');
+  initStatusRadialChart('draftRadialChart', draftPersentase, '#ff9f43');
+
+  // Update display values
+  document.getElementById('sudahTotal').textContent = formatFinancial(window.statusDistributionData.sudah.total);
+  document.getElementById('sudahPersentase').textContent = sudahPersentase.toFixed(1) + '%';
+
+  document.getElementById('belumTotal').textContent = formatFinancial(window.statusDistributionData.belum.total);
+  document.getElementById('belumPersentase').textContent = belumPersentase.toFixed(1) + '%';
+
+  document.getElementById('draftTotal').textContent = formatFinancial(window.statusDistributionData.draft.total);
+  document.getElementById('draftPersentase').textContent = draftPersentase.toFixed(1) + '%';
 }
 
 // Realization Rate Radial Bar Chart
