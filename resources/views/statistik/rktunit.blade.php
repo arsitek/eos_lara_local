@@ -29,7 +29,7 @@
     <div class="card-body">
       <div class="row mb-4">
         <div class="col-12">
-          <h5 class="mb-2">REALISASI ANGGARAN</h5>
+          <h5 class="mb-2">Realisasi Anggaran</h5>
         </div>
       </div>
 
@@ -134,7 +134,7 @@
   <!-- Status Distribution -->
   <div class="card mb-6">
     <div class="card-header">
-      <h5 class="card-title mb-0">DISTRIBUSI ANGGARAN</h5>
+      <h5 class="card-title mb-0">Distribusi Anggaran</h5>
     </div>
     <div class="card-body">
       <!-- 3 Kartu Horizontal dengan Progress Bar -->
