@@ -410,3 +410,80 @@ if (document.querySelector('#realizationRadialChart')) {
   const realizationRadialChart = new ApexCharts(realizationRadialChartEl, realizationRadialChartConfig);
   realizationRadialChart.render();
 }
+
+// Distribusi per Jenis RAB - Donut Chart and Detail Cards
+if (document.querySelector('#jenisRabDonutChart')) {
+  // Calculate percentages and averages
+  const jenisRabData = window.distribusiJenisRab.map(item => {
+    const persentase = window.totalSemua > 0 ? (item.total_jumlah_biaya / window.totalSemua) * 100 : 0;
+    const avgPerItem = item.count > 0 ? item.total_jumlah_biaya / item.count : 0;
+    return {
+      ...item,
+      persentase: persentase,
+      avgPerItem: avgPerItem
+    };
+  });
+
+  // Sort by percentage descending
+  jenisRabData.sort((a, b) => b.persentase - a.persentase);
+
+  // Colors for each type
+  const colors = ['#4a3aa7', '#7a6cd6', '#c5bcec', '#9e8ed9', '#8b7bcf'];
+
+  // Update total display
+  document.getElementById('jenisRabTotal').textContent = formatFinancial(window.totalSemua);
+
+  // Generate detail cards
+  const detailsContainer = document.getElementById('jenisRabDetails');
+  detailsContainer.innerHTML = jenisRabData
+    .map(
+      (item, index) => `
+    <div style="display: flex; align-items: center; justify-content: space-between; background: #fff; border-radius: 8px; padding: 0.85rem 1rem; border-left: 3px solid${colors[index % colors.length]};">
+      <div>
+        <p style="font-size: 13px; font-weight: 500; margin: 0; color: #5D596C;">${item.jenis}</p>
+        <p style="font-size: 11px; color: #6c757d; margin: 2px 0 0;">${item.count.toLocaleString('id-ID')} item · rata-rata${formatFinancial(item.avgPerItem)}/item</p>
+      </div>
+      <div style="text-align: right;">
+        <p style="font-size: 15px; font-weight: 500; margin: 0; color: #5D596C;">${formatFinancial(item.total_jumlah_biaya)}</p>
+        <p style="font-size: 11px; color: #6c757d; margin: 2px 0 0;">${item.persentase.toFixed(1)}%</p>
+      </div>
+    </div>
+  `
+    )
+    .join('');
+
+  // Donut Chart
+  const jenisRabDonutOptions = {
+    series: jenisRabData.map(item => item.persentase),
+    labels: jenisRabData.map(item => item.jenis),
+    chart: {
+      type: 'donut',
+      height: 220,
+      fontFamily: 'Public Sans, sans-serif'
+    },
+    colors: colors.slice(0, jenisRabData.length),
+    plotOptions: {
+      pie: {
+        donut: {
+          size: '68%'
+        }
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    legend: {
+      show: false
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return val.toFixed(1) + '%';
+        }
+      }
+    }
+  };
+
+  const jenisRabDonutChart = new ApexCharts(document.querySelector('#jenisRabDonutChart'), jenisRabDonutOptions);
+  jenisRabDonutChart.render();
+}

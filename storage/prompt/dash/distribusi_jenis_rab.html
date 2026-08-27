@@ -1,0 +1,67 @@
+
+<h2 class="sr-only">Distribusi dana per jenis RAB: Operasional, Sarana, dan Prasarana, dengan proporsi dan rata-rata nilai per item</h2>
+
+<div style="display:grid; grid-template-columns: 220px 1fr; gap:24px; align-items:center;">
+  <div style="position:relative; width:100%; height:220px;">
+    <canvas id="rabDonut" role="img" aria-label="Donut chart distribusi jenis RAB: Operasional 80,7 persen, Prasarana 11,9 persen, Sarana 7,4 persen">Operasional 80,7%, Prasarana 11,9%, Sarana 7,4%.</canvas>
+    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center;">
+      <p style="font-size:11px; color:var(--text-secondary); margin:0;">Total</p>
+      <p style="font-size:17px; font-weight:500; margin:0; color:var(--text-primary);">Rp523,35 M</p>
+    </div>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:10px;">
+    <div style="display:flex; align-items:center; justify-content:space-between; background:var(--surface-1); border-radius:var(--radius); padding:0.85rem 1rem; border-left:3px solid #4a3aa7;">
+      <div>
+        <p style="font-size:13px; font-weight:500; margin:0; color:var(--text-primary);">Operasional</p>
+        <p style="font-size:11px; color:var(--text-secondary); margin:2px 0 0;">11.606 item · rata-rata Rp36,4 juta/item</p>
+      </div>
+      <div style="text-align:right;">
+        <p style="font-size:15px; font-weight:500; margin:0; color:var(--text-primary);">Rp422,60 M</p>
+        <p style="font-size:11px; color:var(--text-secondary); margin:2px 0 0;">80,7%</p>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; justify-content:space-between; background:var(--surface-1); border-radius:var(--radius); padding:0.85rem 1rem; border-left:3px solid #7a6cd6;">
+      <div>
+        <p style="font-size:13px; font-weight:500; margin:0; color:var(--text-primary);">Prasarana</p>
+        <p style="font-size:11px; color:var(--text-secondary); margin:2px 0 0;">237 item · rata-rata Rp262,5 juta/item</p>
+      </div>
+      <div style="text-align:right;">
+        <p style="font-size:15px; font-weight:500; margin:0; color:var(--text-primary);">Rp62,21 M</p>
+        <p style="font-size:11px; color:var(--text-secondary); margin:2px 0 0;">11,9%</p>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; justify-content:space-between; background:var(--surface-1); border-radius:var(--radius); padding:0.85rem 1rem; border-left:3px solid #c5bcec;">
+      <div>
+        <p style="font-size:13px; font-weight:500; margin:0; color:var(--text-primary);">Sarana</p>
+        <p style="font-size:11px; color:var(--text-secondary); margin:2px 0 0;">794 item · rata-rata Rp48,5 juta/item</p>
+      </div>
+      <div style="text-align:right;">
+        <p style="font-size:15px; font-weight:500; margin:0; color:var(--text-primary);">Rp38,54 M</p>
+        <p style="font-size:11px; color:var(--text-secondary); margin:2px 0 0;">7,4%</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+new Chart(document.getElementById('rabDonut'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Operasional','Prasarana','Sarana'],
+    datasets: [{
+      data: [422603700436,62206143000,38540253844],
+      backgroundColor: ['#4a3aa7','#7a6cd6','#c5bcec'],
+      borderColor: 'transparent',
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '68%',
+    plugins: { legend: { display: false }, tooltip: { enabled: true } }
+  }
+});
+</script>
