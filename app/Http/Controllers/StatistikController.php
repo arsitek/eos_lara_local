@@ -261,7 +261,7 @@ class StatistikController extends Controller
             $totalSemua['count']++;
         }
 
-        // Hitung Realization Rate (weighted average): total_realisasi / total_jumlah_biaya × 100
+        // Hitung Tingkat Realisasi (weighted average): total_realisasi / total_jumlah_biaya × 100
         if ($totalSemua['total_jumlah_biaya'] > 0) {
             $totalSemua['avg_persentase'] = round(($totalSemua['total_realisasi'] / $totalSemua['total_jumlah_biaya']) * 100, 2);
         } else {
@@ -390,7 +390,7 @@ class StatistikController extends Controller
                 'realisasi' => $item->realisasi,
                 'sisa' => $item->jumlah_biaya - $item->realisasi,
                 'persentase' => $item->jumlah_biaya > 0 ? round(($item->realisasi / $item->jumlah_biaya) * 100, 2) : 0,
-                'is_draft' => $item->is_draft
+                'is_draft' => $item->is_draft,
             ];
         }
 

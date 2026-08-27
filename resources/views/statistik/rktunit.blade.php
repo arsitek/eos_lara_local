@@ -21,6 +21,7 @@
   <!-- Pass data to JavaScript -->
   <script>
     window.dataRktUnit = @json($dataRktDetailArray);
+    window.realizationRate = {{ $totalSemua['avg_persentase'] ?? 0 }};
   </script>
 
   <!-- Hero Performance -->
@@ -28,95 +29,82 @@
     <div class="card-body">
       <div class="row mb-4">
         <div class="col-12">
-          <h5 class="mb-2">REALIZATION RATE</h5>
+          <h5 class="mb-2">REALISASI ANGGARAN</h5>
         </div>
       </div>
 
-      <!-- Progress Bar -->
-      <div class="row mb-4">
-        <div class="col-12">
-          <div class="d-flex justify-content-between mb-1">
-            <span class="fw-medium">Realization Rate</span>
-            <span class="fw-bold">{{ number_format($totalSemua['avg_persentase'] ?? 0, 2, ',', '.') }}%</span>
-          </div>
-          <div class="progress" style="height: 50px;">
-            <div class="progress-bar bg-primary" role="progressbar"
-              style="width: {{ min(100, max(0, $totalSemua['avg_persentase'] ?? 0)) }}%"
-              aria-valuenow="{{ min(100, max(0, $totalSemua['avg_persentase'] ?? 0)) }}" aria-valuemin="0"
-              aria-valuemax="100">
-            </div>
-          </div>
+      <div class="row align-items-center">
+        <!-- Radial Bar Chart -->
+        <div class="col-md-5">
+          <div id="realizationRadialChart"></div>
         </div>
-      </div>
 
-      <!-- Supporting Metrics -->
-      <div class="row g-6">
-        <div class="col-md-4">
-          <div class="d-flex align-items-center gap-4">
-            <div class="avatar avatar-lg">
-              <div class="avatar-initial bg-label-primary rounded">
-                <div class="text-primary">
-                  <svg width="38" height="38" viewBox="0 0 38 38" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <g id="Wallet">
-                      <path id="Vector" opacity="0.2" d="M5.9375 11.875V26.125H32.0625V11.875H5.9375Z"
-                        fill="currentColor" />
-                      <path id="Vector_2"
-                        d="M5.9375 11.875V26.125H32.0625V11.875M5.9375 11.875H32.0625M5.9375 11.875L8.3125 8.3125H29.6875L32.0625 11.875M5.9375 26.125L8.3125 29.6875H29.6875L32.0625 26.125"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </g>
-                  </svg>
+        <!-- Supporting Metrics -->
+        <div class="col-md-7">
+          <div class="d-flex flex-column gap-4">
+            <div class="d-flex align-items-center gap-4">
+              <div class="avatar avatar-lg">
+                <div class="avatar-initial bg-label-primary rounded">
+                  <div class="text-primary">
+                    <svg width="38" height="38" viewBox="0 0 38 38" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <g id="Wallet">
+                        <path id="Vector" opacity="0.2" d="M5.9375 11.875V26.125H32.0625V11.875H5.9375Z"
+                          fill="currentColor" />
+                        <path id="Vector_2"
+                          d="M5.9375 11.875V26.125H32.0625V11.875M5.9375 11.875H32.0625M5.9375 11.875L8.3125 8.3125H29.6875L32.0625 11.875M5.9375 26.125L8.3125 29.6875H29.6875L32.0625 26.125"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      </g>
+                    </svg>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="content-right">
-              <p class="mb-0 fw-medium text-body">Total Allocation</p>
-              <h4 class="text-primary mb-0">{{ number_format($totalSemua['total_jumlah_biaya'] ?? 0, 0, ',', '.') }}</h4>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="d-flex align-items-center gap-4">
-            <div class="avatar avatar-lg">
-              <div class="avatar-initial bg-label-success rounded">
-                <div class="text-success">
-                  <svg width="38" height="38" viewBox="0 0 38 38" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <g id="TrendingUp">
-                      <path id="Vector" opacity="0.2" d="M5.9375 26.125L14.25 17.8125L19 22.5625L32.0625 9.5"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                      <path id="Vector_2" d="M32.0625 9.5H23.75M32.0625 9.5V17.8125" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </g>
-                  </svg>
-                </div>
+              <div class="content-right">
+                <p class="mb-0 fw-medium text-body">Total Pagu</p>
+                <h4 class="text-primary mb-0">{{ number_format($totalSemua['total_jumlah_biaya'] ?? 0, 0, ',', '.') }}
+                </h4>
               </div>
             </div>
-            <div class="content-right">
-              <p class="mb-0 fw-medium text-body">Total Realization</p>
-              <h4 class="text-success mb-0">{{ number_format($totalSemua['total_realisasi'] ?? 0, 0, ',', '.') }}</h4>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="d-flex align-items-center gap-4">
-            <div class="avatar avatar-lg">
-              <div class="avatar-initial bg-label-info rounded">
-                <div class="text-info">
-                  <svg width="38" height="38" viewBox="0 0 38 38" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <g id="Activity">
-                      <path id="Vector" opacity="0.2"
-                        d="M5.9375 19L14.25 19L19 11.875L23.75 26.125L28.5 19L32.0625 19" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </g>
-                  </svg>
+            <div class="d-flex align-items-center gap-4">
+              <div class="avatar avatar-lg">
+                <div class="avatar-initial bg-label-success rounded">
+                  <div class="text-success">
+                    <svg width="38" height="38" viewBox="0 0 38 38" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <g id="TrendingUp">
+                        <path id="Vector" opacity="0.2" d="M5.9375 26.125L14.25 17.8125L19 22.5625L32.0625 9.5"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path id="Vector_2" d="M32.0625 9.5H23.75M32.0625 9.5V17.8125" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      </g>
+                    </svg>
+                  </div>
                 </div>
               </div>
+              <div class="content-right">
+                <p class="mb-0 fw-medium text-body">Total Realisasi</p>
+                <h4 class="text-success mb-0">{{ number_format($totalSemua['total_realisasi'] ?? 0, 0, ',', '.') }}</h4>
+              </div>
             </div>
-            <div class="content-right">
-              <p class="mb-0 fw-medium text-body">Remaining Allocation</p>
-              <h4 class="text-info mb-0">{{ number_format($totalSemua['total_sisa'] ?? 0, 0, ',', '.') }}</h4>
+            <div class="d-flex align-items-center gap-4">
+              <div class="avatar avatar-lg">
+                <div class="avatar-initial bg-label-info rounded">
+                  <div class="text-info">
+                    <svg width="38" height="38" viewBox="0 0 38 38" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <g id="Activity">
+                        <path id="Vector" opacity="0.2"
+                          d="M5.9375 19L14.25 19L19 11.875L23.75 26.125L28.5 19L32.0625 19" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div class="content-right">
+                <p class="mb-0 fw-medium text-body">Sisa Pagu</p>
+                <h4 class="text-info mb-0">{{ number_format($totalSemua['total_sisa'] ?? 0, 0, ',', '.') }}</h4>
+              </div>
             </div>
           </div>
         </div>

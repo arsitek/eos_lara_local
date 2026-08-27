@@ -311,3 +311,61 @@ if (document.querySelector('#itemCountDistributionChart')) {
   var itemCountChart = new ApexCharts(document.querySelector('#itemCountDistributionChart'), itemCountOptions);
   itemCountChart.render();
 }
+
+// Realization Rate Radial Bar Chart
+if (document.querySelector('#realizationRadialChart')) {
+  const realizationRadialChartEl = document.querySelector('#realizationRadialChart');
+  const realizationRadialChartConfig = {
+    chart: {
+      height: 450,
+      sparkline: {
+        enabled: true
+      },
+      parentHeightOffset: 0,
+      type: 'radialBar'
+    },
+    colors: ['#FF9F43'], // Warning color (orange)
+    series: [window.realizationRate],
+    plotOptions: {
+      radialBar: {
+        offsetY: 0,
+        startAngle: -90,
+        endAngle: 90,
+        hollow: {
+          size: '65%'
+        },
+        track: {
+          strokeWidth: '55%',
+          background: '#E9ECEF'
+        },
+        dataLabels: {
+          name: {
+            show: false
+          },
+          value: {
+            fontSize: '54px',
+            color: '#ff8717',
+            fontWeight: 600,
+            offsetY: -5,
+            formatter: function (val) {
+              return val.toFixed(1) + '%';
+            }
+          }
+        }
+      }
+    },
+    grid: {
+      show: false,
+      padding: {
+        bottom: 5
+      }
+    },
+    stroke: {
+      lineCap: 'round'
+    },
+    labels: ['Realisasi']
+  };
+
+  const realizationRadialChart = new ApexCharts(realizationRadialChartEl, realizationRadialChartConfig);
+  realizationRadialChart.render();
+}
