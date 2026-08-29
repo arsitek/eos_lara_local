@@ -24,6 +24,7 @@
     window.realizationRate = {{ $totalSemua['avg_persentase'] ?? 0 }};
     window.distribusiJenisRab = @json($distribusiJenisRab ?? []);
     window.totalSemua = {{ $totalSemua['total_jumlah_biaya'] ?? 0 }};
+    window.distribusiSumberDana = @json($distribusiSumberDana ?? []);
   </script>
 
   <!-- Hero Performance -->
@@ -143,7 +144,7 @@
       <div class="row g-4 mb-6">
         <!-- Sudah -->
         <div class="col-md-4">
-          <div class="card h-100">
+          <div class="card h-100 shadow-none border-0">
             <div class="card-body">
               <p class="mb-2 text-muted" style="font-size: 13px;">Sudah Realisasi</p>
               <h4 class="text-info mb-1" id="sudahTotal">Rp0</h4>
@@ -156,7 +157,7 @@
         </div>
         <!-- Belum -->
         <div class="col-md-4">
-          <div class="card h-100">
+          <div class="card h-100 shadow-none border-0">
             <div class="card-body">
               <p class="mb-2 text-muted" style="font-size: 13px;">Belum Realisasi</p>
               <h4 class="text-danger mb-1" id="belumTotal">Rp0</h4>
@@ -169,7 +170,7 @@
         </div>
         <!-- Draft -->
         <div class="col-md-4">
-          <div class="card h-100">
+          <div class="card h-100 shadow-none border-0">
             <div class="card-body">
               <p class="mb-2 text-muted" style="font-size: 13px;">Draft</p>
               <h4 class="text-warning mb-1" id="draftTotal">Rp0</h4>
@@ -305,10 +306,66 @@
     </div>
   </div>
 
+  <!-- Distribusi per Sumber Dana - Summary Widget -->
+  <div class="card mb-6">
+    <div class="card-header">
+      <h5 class="card-title mb-0">Distribusi per Sumber Dana</h5>
+    </div>
+    <div class="card-body">
+      <!-- 3 Summary Cards -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <p class="mb-2 text-muted" style="font-size: 12px;">Total dana</p>
+              <h4 class="mb-0" id="sumberDanaTotal">Rp0</h4>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <p class="mb-2 text-muted" style="font-size: 12px;">Jumlah sumber dana</p>
+              <h4 class="mb-0" id="sumberDanaCount">0 sumber</h4>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 bg-label-primary">
+            <div class="card-body">
+              <p class="mb-2 text-muted" style="font-size: 12px;">Kontributor terbesar</p>
+              <h4 class="mb-0 text-primary" id="sumberDanaTerbesar">-</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Text -->
+      <p class="mb-3 text-muted" style="font-size: 13px;" id="sumberDanaSummaryText">
+        0 dari 0 sumber dana menyumbang <span style="color: #5D596C; font-weight: 500;">0%</span> dari total dana.
+      </p>
+
+      <!-- Legend -->
+      <div class="d-flex flex-wrap gap-3 mb-3" style="font-size: 12px; color: #6c757d;">
+        <span style="display: flex; align-items: center; gap: 4px;">
+          <span style="width: 10px; height: 10px; border-radius: 2px; background: #0C447C;"></span>
+          6 sumber teratas
+        </span>
+        <span style="display: flex; align-items: center; gap: 4px;">
+          <span style="width: 10px; height: 10px; border-radius: 2px; background: #B5D4F4;"></span>
+          Sumber lainnya
+        </span>
+      </div>
+
+      <!-- Horizontal Bar Chart -->
+      <div id="sumberDanaChart" style="height: 340px;"></div>
+    </div>
+  </div>
+
   <!-- Distribusi per Sumber Dana -->
   <div class="card card-action mb-4">
     <div class="card-header">
-      <h5 class="card-action-title mb-0">Distribusi per Sumber Dana</h5>
+      <h5 class="card-action-title mb-0">Rincian Distribusi per Sumber Dana</h5>
       <div class="card-action-element">
         <ul class="list-inline mb-0">
           <li class="list-inline-item">

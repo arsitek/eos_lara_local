@@ -1,0 +1,80 @@
+
+<h2 class="sr-only">Distribusi dana per sumber, diurutkan dari kontributor terbesar, dengan ringkasan total dana dan jumlah sumber</h2>
+
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap:12px; margin-bottom:1.5rem;">
+  <div style="background:var(--surface-1); border-radius:var(--radius); padding:1rem;">
+    <p style="font-size:12px; color:var(--text-secondary); margin:0 0 6px;">Total dana</p>
+    <p style="font-size:20px; font-weight:500; margin:0; color:var(--text-primary);">Rp523,35 M</p>
+  </div>
+  <div style="background:var(--surface-1); border-radius:var(--radius); padding:1rem;">
+    <p style="font-size:12px; color:var(--text-secondary); margin:0 0 6px;">Jumlah sumber dana</p>
+    <p style="font-size:20px; font-weight:500; margin:0; color:var(--text-primary);">23 sumber</p>
+  </div>
+  <div style="background:var(--bg-accent-muted); border-radius:var(--radius); padding:1rem;">
+    <p style="font-size:12px; color:var(--text-secondary); margin:0 0 6px;">Kontributor terbesar</p>
+    <p style="font-size:20px; font-weight:500; margin:0; color:var(--text-accent);">Dana UKT · 58,6%</p>
+  </div>
+</div>
+
+<p style="font-size:13px; color:var(--text-secondary); margin:0 0 12px;">6 dari 23 sumber dana menyumbang <span style="color:var(--text-primary); font-weight:500;">94,3%</span> dari total dana.</p>
+
+<div style="display:flex; flex-wrap:wrap; gap:16px; margin-bottom:8px; font-size:12px; color:var(--text-secondary);">
+  <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:#0C447C;"></span>6 sumber teratas</span>
+  <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:#B5D4F4;"></span>17 sumber lainnya</span>
+</div>
+
+<div style="position:relative; width:100%; height:340px;">
+  <canvas id="fundChart" role="img" aria-label="Bar chart horizontal distribusi dana per sumber, diurutkan dari terbesar: Dana UKT 306,4 miliar, BP-PTNBH 69,4 miliar, Pendidikan lainnya 48,7 miliar, Dana IPI 47,3 miliar, DRPTM LPPM 12,5 miliar, Rumah Sakit Pendidikan 9,0 miliar, dan 17 sumber dana lainnya sebesar 29,9 miliar">Dana UKT Rp306,4M (58,6%), BP-PTNBH Rp69,4M (13,3%), Pendidikan Lainnya Rp48,7M (9,3%), Dana IPI Rp47,3M (9,0%), DRPTM LPPM Rp12,5M (2,4%), Rumah Sakit Pendidikan Rp9,0M (1,7%), 17 sumber lainnya Rp29,9M (5,7%).</canvas>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const labels = ['Dana UKT','BP-PTNBH','Pendidikan lainnya','Dana IPI','DRPTM LPPM','Rumah Sakit Pendidikan','17 sumber lainnya'];
+const values = [306443801528,69426490000,48718083000,47342389008,12485802000,8991480000,29942051744];
+const pct = ['58,6%','13,3%','9,3%','9,0%','2,4%','1,7%','5,7%'];
+const colors = ['#042C53','#0C447C','#185FA5','#378ADD','#85B7EB','#B5D4F4','#B5D4F4'];
+
+new Chart(document.getElementById('fundChart'), {
+  type: 'bar',
+  data: {
+    labels: labels,
+    datasets: [{
+      data: values,
+      backgroundColor: colors,
+      borderRadius: 4,
+      barThickness: 26
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: { padding: { right: 70 } },
+    scales: {
+      x: { display: false, grace: '5%' },
+      y: { grid: { display: false }, ticks: { font: { size: 12 } } }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: false },
+      datalabels: {}
+    }
+  },
+  plugins: [{
+    id: 'valueLabels',
+    afterDatasetsDraw(chart) {
+      const { ctx } = chart;
+      chart.getDatasetMeta(0).data.forEach((bar, i) => {
+        const v = (values[i] / 1e9).toLocaleString('id-ID', { maximumFractionDigits: 1 });
+        ctx.save();
+        ctx.font = '500 12px sans-serif';
+        ctx.fillStyle = '#52514e';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('Rp' + v + 'M · ' + pct[i], bar.x + 8, bar.y);
+        ctx.restore();
+      });
+    }
+  }]
+});
+</script>

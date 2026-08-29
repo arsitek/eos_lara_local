@@ -487,3 +487,122 @@ if (document.querySelector('#jenisRabDonutChart')) {
   const jenisRabDonutChart = new ApexCharts(document.querySelector('#jenisRabDonutChart'), jenisRabDonutOptions);
   jenisRabDonutChart.render();
 }
+
+// Distribusi per Sumber Dana - Summary Widget
+if (document.querySelector('#sumberDanaChart')) {
+  // Calculate percentages and sort
+  const sumberDanaData = window.distribusiSumberDana.map(item => {
+    const persentase = window.totalSemua > 0 ? (item.total_jumlah_biaya / window.totalSemua) * 100 : 0;
+    return {
+      ...item,
+      persentase: persentase
+    };
+  });
+
+  // Sort by percentage descending
+  sumberDanaData.sort((a, b) => b.persentase - a.persentase);
+
+  // Separate top 6 and others
+  const top6 = sumberDanaData.slice(0, 6);
+  const others = sumberDanaData.slice(6);
+
+  const othersTotal = others.reduce((sum, item) => sum + item.total_jumlah_biaya, 0);
+  const othersPersentase = window.totalSemua > 0 ? (othersTotal / window.totalSemua) * 100 : 0;
+
+  // Prepare chart data
+  const chartLabels = top6.map(item => item.sumberdana);
+  const chartValues = top6.map(item => item.total_jumlah_biaya);
+  const chartPercentages = top6.map(item => item.persentase);
+
+  // Add "others" if there are more than 6 sources
+  if (others.length > 0) {
+    chartLabels.push(`${others.length} sumber lainnya`);
+    chartValues.push(othersTotal);
+    chartPercentages.push(othersPersentase);
+  }
+
+  // Colors - blue gradient
+  const colors = ['#042C53', '#0C447C', '#185FA5', '#378ADD', '#85B7EB', '#B5D4F4', '#B5D4F4'];
+
+  // Update summary cards
+  document.getElementById('sumberDanaTotal').textContent = formatFinancial(window.totalSemua);
+  document.getElementById('sumberDanaCount').textContent = sumberDanaData.length + ' sumber';
+
+  if (top6.length > 0) {
+    const terbesar = top6[0];
+    document.getElementById('sumberDanaTerbesar').textContent =
+      `${terbesar.sumberdana} ·${terbesar.persentase.toFixed(1)}%`;
+  }
+
+  // Update summary text
+  const top6Total = top6.reduce((sum, item) => sum + item.total_jumlah_biaya, 0);
+  const top6Persentase = window.totalSemua > 0 ? (top6Total / window.totalSemua) * 100 : 0;
+  document.getElementById('sumberDanaSummaryText').innerHTML =
+    `${top6.length} dari${sumberDanaData.length} sumber dana menyumbang <span style="color: #5D596C; font-weight: 500;">${top6Persentase.toFixed(1)}%</span> dari total dana.`;
+
+  // Horizontal Bar Chart
+  const sumberDanaChartOptions = {
+    series: [
+      {
+        data: chartValues
+      }
+    ],
+    chart: {
+      type: 'bar',
+      height: 340,
+      toolbar: { show: false }
+    },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+        borderRadius: 4,
+        barHeight: '60%',
+        distributed: true
+      }
+    },
+    colors: colors,
+    xaxis: {
+      categories: chartLabels,
+      labels: {
+        show: false
+      },
+      axisBorder: { show: false },
+      axisTicks: { show: false }
+    },
+    yaxis: {
+      labels: {
+        style: {
+          fontSize: '12px',
+          colors: '#6c757d'
+        }
+      }
+    },
+    grid: {
+      show: false
+    },
+    legend: {
+      show: false
+    },
+    tooltip: {
+      enabled: false
+    },
+    dataLabels: {
+      enabled: true,
+      formatter: function (val, opts) {
+        const index = opts.dataPointIndex;
+        const valueInM = val / 1000000000;
+        const percentage = chartPercentages[index];
+        return `Rp${valueInM.toFixed(1).replace('.', ',')}M ·${percentage.toFixed(1)}%`;
+      },
+      style: {
+        fontSize: '12px',
+        fontWeight: 500,
+        colors: ['#52514e']
+      },
+      offsetX: 8
+    }
+  };
+
+  const sumberDanaChart = new ApexCharts(document.querySelector('#sumberDanaChart'), sumberDanaChartOptions);
+  sumberDanaChart.render();
+}
