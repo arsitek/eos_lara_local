@@ -531,7 +531,7 @@ if (document.querySelector('#sumberDanaChart')) {
   if (top6.length > 0) {
     const terbesar = top6[0];
     document.getElementById('sumberDanaTerbesar').textContent =
-      `${terbesar.sumberdana} ·${terbesar.persentase.toFixed(1)}%`;
+      `${terbesar.sumberdana} ${terbesar.persentase.toFixed(1)}%`;
   }
 
   // Update summary text

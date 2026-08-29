@@ -315,7 +315,7 @@
       <!-- 3 Summary Cards -->
       <div class="row g-4 mb-4">
         <div class="col-md-4">
-          <div class="card h-100">
+          <div class="card h-100 shadow-none border-2">
             <div class="card-body">
               <p class="mb-2 text-muted" style="font-size: 12px;">Total dana</p>
               <h4 class="mb-0" id="sumberDanaTotal">Rp0</h4>
@@ -323,7 +323,7 @@
           </div>
         </div>
         <div class="col-md-4">
-          <div class="card h-100">
+          <div class="card h-100 shadow-none border-2">
             <div class="card-body">
               <p class="mb-2 text-muted" style="font-size: 12px;">Jumlah sumber dana</p>
               <h4 class="mb-0" id="sumberDanaCount">0 sumber</h4>
