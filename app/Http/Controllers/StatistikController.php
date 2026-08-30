@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Contracts\View\View as ViewContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class StatistikController extends Controller
 {
@@ -42,20 +43,53 @@ class StatistikController extends Controller
         ORDER BY sd.kd_sumberdana, ba.idunit", [$idBackup]);
 
         // Realisasi Backup
-        $realisasiBackup = DB::connection('sirekat')->select('SELECT
-            unit.nama AS unit_kerja,
-            unit.idunit AS unit_kerja_rkt,
-            sd.kd_sumberdana,
-            sd.sumberdana,
-            SUM(COALESCE(backupRkatDet.jumlah_amprahan, 0) + COALESCE(backupRkatDet.jumlah_realisasi, 0)) AS realisasi
-        FROM tb_backup_rkat backupRkat
-        INNER JOIN tb_backup_rkat_detail backupRkatDet ON backupRkatDet.id_rekat = backupRkat.id_rekat
-        INNER JOIN tb_sumberdana sd ON sd.kd_sumberdana = backupRkat.sd
-        INNER JOIN tb_unit_api unit ON unit.idunit = backupRkat.idunit
-        WHERE backupRkat.id_duplikasi = ?
-          AND backupRkatDet.id_duplikasi = ?
-          AND backupRkat.tahun = ?
-        GROUP BY unit.idunit, backupRkat.sd', [$idBackup, $idBackup, $backupTahun]);
+        $realisasiBackup = DB::connection('sirekat')->select('
+    SELECT
+        unit.nama AS unit_kerja,
+        unit.idunit AS unit_kerja_rkt,
+        sd.kd_sumberdana,
+        sd.sumberdana,
+        SUM(
+            COALESCE(backupRkatDet.jumlah_amprahan, 0)
+            + COALESCE(backupRkatDet.jumlah_realisasi, 0)
+        ) AS realisasi
+    FROM tb_backup_rkat backupRkat
+
+    INNER JOIN tb_backup_rkat_detail backupRkatDet
+        ON backupRkatDet.id_rekat = backupRkat.id_rekat
+        AND backupRkatDet.id_duplikasi = backupRkat.id_duplikasi
+
+    INNER JOIN tb_sumberdana sd
+        ON sd.kd_sumberdana = backupRkat.sd
+        AND sd.tahun = RIGHT(backupRkat.tahun, 4)
+        AND sd.is_show = \'true\'
+        AND sd.is_deleted = \'false\'
+
+    INNER JOIN (
+        SELECT
+            idunit,
+            MAX(nama) AS nama
+        FROM tb_unit_api
+        GROUP BY idunit
+    ) unit
+        ON unit.idunit = backupRkat.idunit
+
+    WHERE backupRkat.id_duplikasi = ?
+      AND backupRkat.tahun = ?
+      AND backupRkatDet.is_deleted = \'false\'
+
+    GROUP BY
+        unit.idunit,
+        backupRkat.sd
+', [$idBackup, $backupTahun]);
+
+        Log::info('DAYASERAP DEBUG', [
+            'idBackup' => $idBackup,
+            'backupTahun' => $backupTahun,
+            'jumlah_realisasi_rows' => count($realisasiBackup),
+            'total_realisasi_backup' => collect($realisasiBackup)->sum('realisasi'),
+            'sample_realisasi' => array_slice($realisasiBackup, 0, 5),
+        ]);
 
         // Gabungkan data alokasi dan realisasi
         $dataDayaSerap = [];
@@ -214,6 +248,7 @@ class StatistikController extends Controller
         FROM tb_backup_rkat backupRkat
         INNER JOIN tb_backup_rkat_detail backupRkatDet ON backupRkatDet.id_rekat = backupRkat.id_rekat
         INNER JOIN tb_sumberdana sd ON sd.kd_sumberdana = backupRkat.sd
+            AND sd.tahun = RIGHT(backupRkat.tahun, 4)
             AND sd.is_show = 'true'
             AND sd.is_deleted = 'false'
         INNER JOIN tb_unit_api unit ON unit.idunit = backupRkat.idunit

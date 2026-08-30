@@ -114,13 +114,7 @@
         <div class="d-flex align-items-center gap-3 mb-2">
           <span class="text-muted" style="font-size: 12px; width: 64px; flex-shrink: 0;">Pagu</span>
           <div class="flex-grow-1" style="height: 14px; background: #f5f5f5; border-radius: 4px; overflow: hidden;">
-            @php
-              $paguPercentage =
-                  $totalSemua['total_realisasi'] > 0
-                      ? ($totalSemua['total_pagu_alokasi'] / $totalSemua['total_realisasi']) * 100
-                      : 0;
-            @endphp
-            <div style="width: {{ min(100, $paguPercentage) }}%; height: 100%; background: #378ADD;"></div>
+            <div style="width: 100%; height: 100%; background: #378ADD;"></div>
           </div>
           <span class="text-muted"
             style="font-size: 12px; width: 110px; text-align: right; flex-shrink: 0;">{{ number_format($totalSemua['total_pagu_alokasi'] ?? 0, 0, ',', '.') }}</span>
@@ -128,7 +122,14 @@
         <div class="d-flex align-items-center gap-3">
           <span class="text-muted" style="font-size: 12px; width: 64px; flex-shrink: 0;">Realisasi</span>
           <div class="flex-grow-1" style="height: 14px; background: #f5f5f5; border-radius: 4px; overflow: hidden;">
-            <div style="width: 100%; height: 100%; background: #E24B4A;"></div>
+            @php
+              $realisasiPercentage =
+                  ($totalSemua['total_pagu_alokasi'] ?? 0) > 0
+                      ? (($totalSemua['total_realisasi'] ?? 0) / ($totalSemua['total_pagu_alokasi'] ?? 0)) * 100
+                      : 0;
+              $realisasiWidth = min(100, max(0, $realisasiPercentage));
+            @endphp
+            <div style="width: {{ $realisasiWidth }}%; height: 100%; background: #E24B4A;"></div>
           </div>
           <span class="text-danger"
             style="font-size: 12px; width: 110px; text-align: right; flex-shrink: 0; font-weight: 500;">{{ number_format($totalSemua['total_realisasi'] ?? 0, 0, ',', '.') }}</span>
