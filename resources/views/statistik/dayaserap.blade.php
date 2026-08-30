@@ -64,7 +64,10 @@
                   style="width: 28px; height: 28px; border-radius: 7px; background: rgba(40, 199, 111, 0.12); display: flex; align-items: center; justify-content: center;">
                   <i class="icon-base ti tabler-trending-up" style="font-size: 14px; color: #28c76f;"></i>
                 </div>
-                <p class="mb-0 text-muted" style="font-size: 12px;">Total realisasi</p>
+                <p class="mb-0 text-muted" style="font-size: 12px;">Total realisasi (Anggaran)</p>
+                <i class="ti ti-help-circle text-muted" style="font-size: 14px; cursor: help;" data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  data-bs-title="Realisasi berdasarkan pagu alokasi vs pengeluaran aktual per unit kerja dan sumber dana. Digunakan untuk pelaporan eksternal ke Kementerian/Dewan."></i>
               </div>
               <h4 class="mb-0 text-success" style="font-size: 19px; font-weight: 500;">
                 {{ number_format($totalSemua['total_realisasi'] ?? 0, 0, ',', '.') }}</h4>
@@ -321,6 +324,44 @@
             (.)
             dan desimal dengan koma (,)</li>
         </ul>
+
+        <h6 class="mb-3">Metrik Realisasi di Sistem</h6>
+        <div class="alert alert-info mb-4">
+          <p class="mb-2"><strong>Terdapat 3 metrik realisasi yang berbeda di sistem dengan tujuan dan scope yang
+              berbeda:</strong></p>
+        </div>
+        <div class="mb-4">
+          <p class="mb-2 fw-bold">1. Total Realisasi (Anggaran) - Halaman Daya Serap</p>
+          <ul class="mb-3">
+            <li><strong>Scope:</strong> Per unit kerja + sumber dana</li>
+            <li><strong>Purpose:</strong> Budget Execution Monitoring (Pagu vs Realisasi)</li>
+            <li><strong>Stakeholder:</strong> Eksternal (Kementerian/Dewan Pengawas)</li>
+            <li><strong>Formula:</strong> SUM(jumlah_amprahan + jumlah_realisasi) GROUP BY unit.idunit, backupRkat.sd</li>
+            <li><strong>Insight:</strong> Mengukur efektivitas eksekusi anggaran untuk pelaporan eksternal sesuai Standar
+              Akuntansi Pemerintahan (SAP)</li>
+          </ul>
+
+          <p class="mb-2 fw-bold">2. Total Realisasi (Kegiatan) - Halaman RKT Unit</p>
+          <ul class="mb-3">
+            <li><strong>Scope:</strong> Per unit kerja + sumber dana + jenis RAB + kegiatan (id_mak)</li>
+            <li><strong>Purpose:</strong> Activity-Based Performance Tracking</li>
+            <li><strong>Stakeholder:</strong> Internal (Unit Kerja)</li>
+            <li><strong>Formula:</strong> COALESCE(jumlah_amprahan, 0) + COALESCE(jumlah_realisasi, 0) GROUP BY
+              unit.idunit, backupRkat.sd, backupRkatDet.jenis, backupRkatDet.id_mak</li>
+            <li><strong>Insight:</strong> Mengukur realisasi per kegiatan/program untuk monitoring internal dan efisiensi
+              operasional (Activity-Based Budgeting)</li>
+          </ul>
+
+          <p class="mb-2 fw-bold">3. Sudah Realisasi (Status) - Halaman RKT Unit (Distribusi Anggaran)</p>
+          <ul class="mb-0">
+            <li><strong>Scope:</strong> Subset dari Total Realisasi (Kegiatan), hanya item dengan realisasi > 0</li>
+            <li><strong>Purpose:</strong> Execution Status Tracking</li>
+            <li><strong>Stakeholder:</strong> Manajemen Operasional</li>
+            <li><strong>Filter:</strong> WHERE realisasi > 0</li>
+            <li><strong>Insight:</strong> Mengukur progress pelaksanaan kegiatan untuk decision making dan prioritisasi
+              sumber daya (Project Management)</li>
+          </ul>
+        </div>
 
         <h6 class="mb-3">Query yang Digunakan</h6>
         <div class="mb-0">

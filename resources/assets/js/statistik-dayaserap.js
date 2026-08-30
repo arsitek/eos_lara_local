@@ -103,6 +103,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
     });
   }
 
+  // Initialize Bootstrap tooltips
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+  tooltipTriggerList.forEach(tooltipTriggerEl => {
+    new bootstrap.Tooltip(tooltipTriggerEl, {
+      boundary: document.body
+    });
+  });
+
   // Filter form control to default size
   setTimeout(() => {
     const elementsToModify = [

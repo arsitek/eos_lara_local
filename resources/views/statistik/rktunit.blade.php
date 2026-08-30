@@ -85,7 +85,10 @@
                 </div>
               </div>
               <div class="content-right">
-                <p class="mb-0 fw-medium text-body">Total Realisasi</p>
+                <p class="mb-0 fw-medium text-body">Total realisasi (Kegiatan)</p>
+                <i class="ti ti-help-circle text-muted" style="font-size: 14px; cursor: help;" data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  data-bs-title="Realisasi berdasarkan pengeluaran aktual per kegiatan/program (granular). Digunakan untuk monitoring internal unit kerja."></i>
                 <h4 class="text-success mb-0">{{ number_format($totalSemua['total_realisasi'] ?? 0, 0, ',', '.') }}</h4>
               </div>
             </div>
@@ -146,7 +149,12 @@
         <div class="col-md-4">
           <div class="card h-100 shadow-none border-0">
             <div class="card-body">
-              <p class="mb-2 text-muted" style="font-size: 13px;">Sudah Realisasi</p>
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <p class="mb-0 text-muted" style="font-size: 13px;">Sudah realisasi (Status)</p>
+                <i class="ti ti-help-circle text-muted" style="font-size: 12px; cursor: help;" data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  data-bs-title="Kegiatan yang sudah memiliki pengeluaran (realisasi > 0). Digunakan untuk decision making operasional."></i>
+              </div>
               <h4 class="text-info mb-1" id="sudahTotal">Rp0</h4>
               <p class="mb-2 text-muted" style="font-size: 12px;" id="sudahCount">0 item</p>
               <div class="progress" style="height: 4px;">
@@ -561,6 +569,44 @@
           <li><strong>Data ditampilkan dalam format Indonesia:</strong> Angka menggunakan pemisah ribuan dengan titik (.)
           </li>
         </ul>
+
+        <h6 class="mb-3">Metrik Realisasi di Sistem</h6>
+        <div class="alert alert-info mb-4">
+          <p class="mb-2"><strong>Terdapat 3 metrik realisasi yang berbeda di sistem dengan tujuan dan scope yang
+              berbeda:</strong></p>
+        </div>
+        <div class="mb-4">
+          <p class="mb-2 fw-bold">1. Total Realisasi (Anggaran) - Halaman Daya Serap</p>
+          <ul class="mb-3">
+            <li><strong>Scope:</strong> Per unit kerja + sumber dana</li>
+            <li><strong>Purpose:</strong> Budget Execution Monitoring (Pagu vs Realisasi)</li>
+            <li><strong>Stakeholder:</strong> Eksternal (Kementerian/Dewan Pengawas)</li>
+            <li><strong>Formula:</strong> SUM(jumlah_amprahan + jumlah_realisasi) GROUP BY unit.idunit, backupRkat.sd</li>
+            <li><strong>Insight:</strong> Mengukur efektivitas eksekusi anggaran untuk pelaporan eksternal sesuai Standar
+              Akuntansi Pemerintahan (SAP)</li>
+          </ul>
+
+          <p class="mb-2 fw-bold">2. Total Realisasi (Kegiatan) - Halaman RKT Unit</p>
+          <ul class="mb-3">
+            <li><strong>Scope:</strong> Per unit kerja + sumber dana + jenis RAB + kegiatan (id_mak)</li>
+            <li><strong>Purpose:</strong> Activity-Based Performance Tracking</li>
+            <li><strong>Stakeholder:</strong> Internal (Unit Kerja)</li>
+            <li><strong>Formula:</strong> COALESCE(jumlah_amprahan, 0) + COALESCE(jumlah_realisasi, 0) GROUP BY
+              unit.idunit, backupRkat.sd, backupRkatDet.jenis, backupRkatDet.id_mak</li>
+            <li><strong>Insight:</strong> Mengukur realisasi per kegiatan/program untuk monitoring internal dan efisiensi
+              operasional (Activity-Based Budgeting)</li>
+          </ul>
+
+          <p class="mb-2 fw-bold">3. Sudah Realisasi (Status) - Halaman RKT Unit (Distribusi Anggaran)</p>
+          <ul class="mb-0">
+            <li><strong>Scope:</strong> Subset dari Total Realisasi (Kegiatan), hanya item dengan realisasi > 0</li>
+            <li><strong>Purpose:</strong> Execution Status Tracking</li>
+            <li><strong>Stakeholder:</strong> Manajemen Operasional</li>
+            <li><strong>Filter:</strong> WHERE realisasi > 0</li>
+            <li><strong>Insight:</strong> Mengukur progress pelaksanaan kegiatan untuk decision making dan prioritisasi
+              sumber daya (Project Management)</li>
+          </ul>
+        </div>
 
         <h6 class="mb-3">Query yang Digunakan</h6>
         <div class="mb-0">

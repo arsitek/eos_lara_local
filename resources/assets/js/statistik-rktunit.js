@@ -606,3 +606,11 @@ if (document.querySelector('#sumberDanaChart')) {
   const sumberDanaChart = new ApexCharts(document.querySelector('#sumberDanaChart'), sumberDanaChartOptions);
   sumberDanaChart.render();
 }
+
+// Initialize Bootstrap tooltips
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+tooltipTriggerList.forEach(tooltipTriggerEl => {
+  new bootstrap.Tooltip(tooltipTriggerEl, {
+    boundary: document.body
+  });
+});
