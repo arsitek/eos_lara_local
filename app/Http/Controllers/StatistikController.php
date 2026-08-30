@@ -186,6 +186,14 @@ class StatistikController extends Controller
 
         // Query untuk mengambil data RKT dari backup
         // Menggunakan pattern dari RekatByUnitController dengan baseDataBackup
+        //
+        // QUERY INI MENDUKUNG 3 METRIK REALISASI:
+        // 1. Total Realisasi (Kegiatan) - dihitung dengan mengagregasi 'realisasi' dari semua item per unit (lines 234-235)
+        // 2. Sudah Realisasi (Status) - dihitung dengan filter item di mana 'realisasi' > 0 (lines 295-299)
+        // 3. Belum Realisasi & Draft - dihitung dengan filter item di mana 'realisasi' = 0 atau 'is_draft' = 'true' (lines 302-318)
+        //
+        // Granularity: Per unit kerja + sumber dana + jenis RAB + kegiatan (id_mak)
+        // Ini adalah level paling granular yang memungkinkan agregasi ke level yang lebih tinggi
         $dataRktBackup = DB::connection('sirekat')->select("
         SELECT
             unit.nama AS unit_kerja,
@@ -217,6 +225,8 @@ class StatistikController extends Controller
     ", [$idBackup, $idBackup, $backupTahun]);
 
         // Agregasi per unit kerja
+        // PROSES INI MENGHASILKAN: Total Realisasi (Kegiatan) per unit
+        // Mengagregasi data dari level granular (kegiatan) ke level unit kerja
         $dataPerUnit = [];
         foreach ($dataRktBackup as $item) {
             $unit = $item->unit_kerja;
@@ -232,7 +242,7 @@ class StatistikController extends Controller
                 ];
             }
             $dataPerUnit[$unit]['total_jumlah_biaya'] += $item->jumlah_biaya;
-            $dataPerUnit[$unit]['total_realisasi'] += $item->realisasi;
+            $dataPerUnit[$unit]['total_realisasi'] += $item->realisasi; // Mengagregasi realisasi untuk Total Realisasi (Kegiatan)
             $dataPerUnit[$unit]['total_sisa'] += ($item->jumlah_biaya - $item->realisasi);
             $dataPerUnit[$unit]['count']++;
         }
@@ -245,6 +255,8 @@ class StatistikController extends Controller
         }
 
         // Hitung total untuk semua unit
+        // PROSES INI MENGHASILKAN: Total Realisasi (Kegiatan) untuk semua unit
+        // Mengagregasi data dari level unit ke level institusi (semua unit)
         $totalSemua = [
             'total_jumlah_biaya' => 0,
             'total_realisasi' => 0,
@@ -255,7 +267,7 @@ class StatistikController extends Controller
 
         foreach ($dataPerUnit as $unitData) {
             $totalSemua['total_jumlah_biaya'] += $unitData['total_jumlah_biaya'];
-            $totalSemua['total_realisasi'] += $unitData['total_realisasi'];
+            $totalSemua['total_realisasi'] += $unitData['total_realisasi']; // Final Total Realisasi (Kegiatan)
             $totalSemua['total_sisa'] += $unitData['total_sisa'];
             $totalSemua['avg_persentase'] += $unitData['avg_persentase'];
             $totalSemua['count']++;
@@ -269,6 +281,8 @@ class StatistikController extends Controller
         }
 
         // Hitung statistik berdasarkan status realisasi
+        // PROSES INI MENGHASILKAN: Sudah Realisasi (Status), Belum Realisasi, dan Draft
+        // Mengfilter data dari query berdasarkan kondisi realisasi dan status draft
         $statusStatistik = [
             'sudah' => [
                 'total_jumlah_biaya' => 0,
@@ -291,14 +305,14 @@ class StatistikController extends Controller
         ];
 
         foreach ($dataRktBackup as $item) {
-            // Sudah Realisasi
+            // Sudah Realisasi (Status) - Filter: realisasi > 0
             if ($item->realisasi > 0) {
                 $statusStatistik['sudah']['total_jumlah_biaya'] += $item->jumlah_biaya;
                 $statusStatistik['sudah']['total_realisasi'] += $item->realisasi;
                 $statusStatistik['sudah']['total_sisa'] += ($item->jumlah_biaya - $item->realisasi);
                 $statusStatistik['sudah']['count']++;
             }
-            // Belum Realisasi
+            // Belum Realisasi - Filter: realisasi = 0 dan bukan draft
             if ($item->realisasi == 0 && $item->is_draft != 'true') {
                 $statusStatistik['belum']['total_jumlah_biaya'] += $item->jumlah_biaya;
                 $statusStatistik['belum']['total_sisa'] += $item->jumlah_biaya;
