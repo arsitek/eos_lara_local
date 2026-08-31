@@ -342,7 +342,7 @@
               Akuntansi Pemerintahan (SAP)</li>
           </ul>
 
-          <p class="mb-2 fw-bold">2. Total Realisasi (Kegiatan) - Halaman RKT Unit</p>
+          <p class="mb-2 fw-bold">2. Realisasi Aktual Kegiatan - Halaman RKT Unit</p>
           <ul class="mb-3">
             <li><strong>Scope:</strong> Per unit kerja + sumber dana + jenis RAB + kegiatan (id_mak)</li>
             <li><strong>Purpose:</strong> Activity-Based Performance Tracking</li>
@@ -353,9 +353,9 @@
               operasional (Activity-Based Budgeting)</li>
           </ul>
 
-          <p class="mb-2 fw-bold">3. Sudah Realisasi (Status) - Halaman RKT Unit (Distribusi Anggaran)</p>
+          <p class="mb-2 fw-bold">3. Pagu Kegiatan dengan Realisasi - Halaman RKT Unit (Distribusi Anggaran)</p>
           <ul class="mb-0">
-            <li><strong>Scope:</strong> Subset dari Total Realisasi (Kegiatan), hanya item dengan realisasi > 0</li>
+            <li><strong>Scope:</strong> Subset dari Realisasi Aktual Kegiatan, hanya item dengan realisasi > 0</li>
             <li><strong>Purpose:</strong> Execution Status Tracking</li>
             <li><strong>Stakeholder:</strong> Manajemen Operasional</li>
             <li><strong>Filter:</strong> WHERE realisasi > 0</li>

@@ -72,7 +72,7 @@ unless existing approved data/business rules already support them.
 Status information must be separated conceptually into:
 
 1. Item Distribution
-2. Financial Distribution
+2. Distribusi Anggaran berdasarkan Nilai
 
 Approved visual direction:
 
@@ -335,7 +335,7 @@ For Status Distribution, implement the approved semantic model:
 
 ITEM DISTRIBUTION
 and
-FINANCIAL DISTRIBUTION
+Distribusi Anggaran berdasarkan Nilai
 
 using the most appropriate existing chart mechanism.
 

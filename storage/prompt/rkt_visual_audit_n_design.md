@@ -171,7 +171,7 @@ A. Item distribution:
 - Draft
 - Number of items
 
-B. Financial distribution:
+B. Distribusi Anggaran berdasarkan Nilai:
 
 - Total Biaya
 - Total Realisasi
@@ -347,7 +347,7 @@ Potentially:
 Potentially separate:
 
 - item distribution
-- financial distribution
+- Distribusi Anggaran berdasarkan Nilai
 
 ### Zone E — Unit Performance
 

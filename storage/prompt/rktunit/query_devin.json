@@ -1,0 +1,146 @@
+[
+  {
+    "row_count": 12640,
+    "distinct_detail_count": 12638,
+    "total_jumlah_biaya": 523352408064.0,
+    "total_realisasi": 121001672704.0
+  },
+  {
+    "status": "sudah",
+    "item_count": 2663,
+    "total_pagu": 174098661376.0,
+    "actual_realization": 121001672704.0
+  },
+  {
+    "status": "belum",
+    "item_count": 9063,
+    "total_pagu": 333566050304.0,
+    "actual_realization": 0.0
+  },
+  {
+    "status": "draft",
+    "item_count": 914,
+    "total_pagu": 15687677952.0,
+    "actual_realization": 0.0
+  },
+  {
+    "source_type": "canonical",
+    "count": 12640
+  },
+  {
+    "source_type": "matched_sumberdana",
+    "count": 12638
+  },
+  {
+    "source_type": "unmatched_sumberdana",
+    "count": 0
+  },
+  {
+    "idunit": "1040403",
+    "sd": "41040701",
+    "jenis": "OPERASIONAL",
+    "id_mak": 118855831,
+    "detail_count": 8,
+    "total_jumlah_biaya": 6160000.0,
+    "total_realisasi": 0.0
+  },
+  {
+    "idunit": "10603",
+    "sd": "41010101",
+    "jenis": "OPERASIONAL",
+    "id_mak": 119249195,
+    "detail_count": 2,
+    "total_jumlah_biaya": 18000000.0,
+    "total_realisasi": 17900000.0
+  },
+  {
+    "idunit": "10603",
+    "sd": "41010101",
+    "jenis": "OPERASIONAL",
+    "id_mak": 116849196,
+    "detail_count": 2,
+    "total_jumlah_biaya": 12000000.0,
+    "total_realisasi": 7830200.0
+  },
+  {
+    "idunit": "10603",
+    "sd": "41010101",
+    "jenis": "OPERASIONAL",
+    "id_mak": 115549197,
+    "detail_count": 2,
+    "total_jumlah_biaya": 21600000.0,
+    "total_realisasi": 0.0
+  },
+  {
+    "idunit": "10603",
+    "sd": "41010101",
+    "jenis": "OPERASIONAL",
+    "id_mak": 117649198,
+    "detail_count": 2,
+    "total_jumlah_biaya": 6000000.0,
+    "total_realisasi": 0.0
+  },
+  {
+    "idunit": "10603",
+    "sd": "41010101",
+    "jenis": "OPERASIONAL",
+    "id_mak": 118549199,
+    "detail_count": 2,
+    "total_jumlah_biaya": 5400000.0,
+    "total_realisasi": 0.0
+  },
+  {
+    "idunit": "10603",
+    "sd": "41010101",
+    "jenis": "OPERASIONAL",
+    "id_mak": 118149200,
+    "detail_count": 2,
+    "total_jumlah_biaya": 2100000.0,
+    "total_realisasi": 0.0
+  },
+  {
+    "idunit": "10603",
+    "sd": "41010101",
+    "jenis": "OPERASIONAL",
+    "id_mak": 118362894,
+    "detail_count": 2,
+    "total_jumlah_biaya": 10000000.0,
+    "total_realisasi": 5363200.0
+  },
+  {
+    "idunit": "10603",
+    "sd": "41010101",
+    "jenis": "OPERASIONAL",
+    "id_mak": 116463831,
+    "detail_count": 2,
+    "total_jumlah_biaya": 4000000.0,
+    "total_realisasi": 0.0
+  },
+  {
+    "idunit": "10603",
+    "sd": "41010101",
+    "jenis": "OPERASIONAL",
+    "id_mak": 119063845,
+    "detail_count": 2,
+    "total_jumlah_biaya": 107000000.0,
+    "total_realisasi": 0.0
+  },
+  {
+    "metric": "actual_realization_total",
+    "value": 121001672704.0
+  },
+  {
+    "metric": "pagu_of_items_with_realization",
+    "value": 174098661376.0
+  },
+  {
+    "row_count": 12640,
+    "total_jumlah_biaya": 523352408064.0,
+    "total_realisasi": 121001672704.0
+  },
+  {
+    "grouped_row_count": 12637,
+    "total_jumlah_biaya": 1046704816128.0,
+    "total_realisasi": 242003345408.0
+  }
+]

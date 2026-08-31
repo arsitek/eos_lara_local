@@ -250,7 +250,7 @@ if (document.querySelector('#sudahTotal')) {
   document.getElementById('belumCountPersentase').textContent = belumCountPersentase.toFixed(0) + '%';
   document.getElementById('draftCountPersentase').textContent = draftCountPersentase.toFixed(0) + '%';
 
-  // Financial Distribution Donut Chart
+  // Distribusi Anggaran berdasarkan Nilai Donut Chart
   const financialDonutOptions = {
     series: [sudahFinPersentase, belumFinPersentase, draftFinPersentase],
     labels: ['Sudah Realisasi', 'Belum Realisasi', 'Draft'],
@@ -285,7 +285,7 @@ if (document.querySelector('#sudahTotal')) {
   const financialDonutChart = new ApexCharts(document.querySelector('#financialDonutChart'), financialDonutOptions);
   financialDonutChart.render();
 
-  // Item Count Distribution Donut Chart
+  // Distribusi berdasarkan Jumlah Kegiatan Donut Chart
   const itemCountDonutOptions = {
     series: [sudahCountPersentase, belumCountPersentase, draftCountPersentase],
     labels: ['Sudah Realisasi', 'Belum Realisasi', 'Draft'],

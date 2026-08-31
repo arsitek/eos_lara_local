@@ -83,7 +83,7 @@ Do not introduce:
 
 Implement two visually distinct stacked bars within the Status Distribution card:
 
-### Financial Distribution
+### Distribusi Anggaran berdasarkan Nilai
 
 Segments:
 
@@ -91,7 +91,7 @@ Segments:
 - Belum
 - Draft
 
-### Item Count Distribution
+### Distribusi berdasarkan Jumlah Kegiatan
 
 Segments:
 
@@ -199,7 +199,7 @@ Verify:
 - Hero is visually dominant
 - Realization Rate is immediately identifiable
 - progress bar behaves correctly at 0%, normal values, and >100%
-- Financial and Item Count distributions are visually separated
+- Financial and Distribusi berdasarkan Jumlah Kegiatans are visually separated
 - Unit Performance remains readable
 - no unapproved semantic thresholds appear
 

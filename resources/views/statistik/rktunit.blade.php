@@ -85,7 +85,7 @@
                 </div>
               </div>
               <div class="content-right">
-                <p class="mb-0 fw-medium text-body">Total realisasi (Kegiatan)</p>
+                <p class="mb-0 fw-medium text-body">Realisasi Aktual Kegiatan</p>
                 <i class="ti ti-help-circle text-muted" style="font-size: 14px; cursor: help;" data-bs-toggle="tooltip"
                   data-bs-placement="top"
                   data-bs-title="Realisasi berdasarkan pengeluaran aktual per kegiatan/program (granular). Digunakan untuk monitoring internal unit kerja."></i>
@@ -150,7 +150,7 @@
           <div class="card h-100 shadow-none border-0">
             <div class="card-body">
               <div class="d-flex align-items-center gap-2 mb-2">
-                <p class="mb-0 text-muted" style="font-size: 13px;">Sudah realisasi (Status)</p>
+                <p class="mb-0 text-muted" style="font-size: 13px;">Pagu Kegiatan dengan Realisasi</p>
                 <i class="ti ti-help-circle text-muted" style="font-size: 12px; cursor: help;" data-bs-toggle="tooltip"
                   data-bs-placement="top"
                   data-bs-title="Kegiatan yang sudah memiliki pengeluaran (realisasi > 0). Digunakan untuk decision making operasional."></i>
@@ -193,7 +193,7 @@
 
       <!-- 2 Donut Charts -->
       <div class="row g-6">
-        <!-- Financial Distribution Donut -->
+        <!-- Distribusi Anggaran berdasarkan Nilai Donut -->
         <div class="col-md-6">
           <div class="d-flex flex-wrap gap-3 mb-2 justify-content-center" style="font-size: 12px; color: #6c757d;">
             <span style="display: flex; align-items: center; gap: 4px;">
@@ -210,9 +210,9 @@
             </span>
           </div>
           <div id="financialDonutChart" style="height: 220px;"></div>
-          <p class="text-center mb-0 mt-2 text-muted" style="font-size: 12px;">Financial distribution</p>
+          <p class="text-center mb-0 mt-2 text-muted" style="font-size: 12px;">Distribusi Anggaran berdasarkan Nilai</p>
         </div>
-        <!-- Item Count Distribution Donut -->
+        <!-- Distribusi berdasarkan Jumlah Kegiatan Donut -->
         <div class="col-md-6">
           <div class="d-flex flex-wrap gap-3 mb-2 justify-content-center" style="font-size: 12px; color: #6c757d;">
             <span style="display: flex; align-items: center; gap: 4px;">
@@ -229,7 +229,8 @@
             </span>
           </div>
           <div id="itemCountDonutChart" style="height: 220px;"></div>
-          <p class="text-center mb-0 mt-2 text-muted" style="font-size: 12px;">Item count distribution</p>
+          <p class="text-center mb-0 mt-2 text-muted" style="font-size: 12px;">Distribusi berdasarkan Jumlah Kegiatan
+          </p>
         </div>
       </div>
     </div>
@@ -586,7 +587,7 @@
               Akuntansi Pemerintahan (SAP)</li>
           </ul>
 
-          <p class="mb-2 fw-bold">2. Total Realisasi (Kegiatan) - Halaman RKT Unit</p>
+          <p class="mb-2 fw-bold">2. Realisasi Aktual Kegiatan - Halaman RKT Unit</p>
           <ul class="mb-3">
             <li><strong>Scope:</strong> Per unit kerja + sumber dana + jenis RAB + kegiatan (id_mak)</li>
             <li><strong>Purpose:</strong> Activity-Based Performance Tracking</li>
@@ -597,9 +598,9 @@
               operasional (Activity-Based Budgeting)</li>
           </ul>
 
-          <p class="mb-2 fw-bold">3. Sudah Realisasi (Status) - Halaman RKT Unit (Distribusi Anggaran)</p>
+          <p class="mb-2 fw-bold">3. Pagu Kegiatan dengan Realisasi - Halaman RKT Unit (Distribusi Anggaran)</p>
           <ul class="mb-0">
-            <li><strong>Scope:</strong> Subset dari Total Realisasi (Kegiatan), hanya item dengan realisasi > 0</li>
+            <li><strong>Scope:</strong> Subset dari Realisasi Aktual Kegiatan, hanya item dengan realisasi > 0</li>
             <li><strong>Purpose:</strong> Execution Status Tracking</li>
             <li><strong>Stakeholder:</strong> Manajemen Operasional</li>
             <li><strong>Filter:</strong> WHERE realisasi > 0</li>
